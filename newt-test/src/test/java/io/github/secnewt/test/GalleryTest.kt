@@ -2,6 +2,8 @@ package io.github.secnewt.test
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -15,11 +17,13 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import io.github.secnewt.ui.CardTitle
 import io.github.secnewt.ui.NewtFonts
+import io.github.secnewt.ui.NewtWeather
 import io.github.secnewt.ui.ScreenHeader
 import io.github.secnewt.ui.SectionHeading
 import io.github.secnewt.ui.SectionLabel
@@ -38,6 +42,8 @@ import org.robolectric.annotation.GraphicsMode
  * Every shared piece on one screen. A change to the library shows up in these screenshots
  * before any app sees it.
  */
+private val CONDITIONS = listOf("CLEAR", "PARTLY_CLOUDY", "CLOUDY", "RAIN", "THUNDERSTORM", "SNOW", "FOG", "WIND")
+
 @RunWith(AndroidJUnit4::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 @Config(sdk = [34], qualifiers = RobolectricDeviceQualifiers.Pixel7)
@@ -79,9 +85,26 @@ class GalleryTest {
                     label = { Text("Label") },
                     colors = neonFieldColors(),
                 )
+                // Weather: every icon by day, sun and moon variants by night, and high/low colors.
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    CONDITIONS.forEach { WeatherIcon(it, isDaytime = true) }
+                }
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    listOf("CLEAR", "PARTLY_CLOUDY").forEach { WeatherIcon(it, isDaytime = false) }
+                    Text("↑ High 90°", color = NewtWeather.highColor(), fontFamily = NewtFonts.Mono, style = MaterialTheme.typography.titleLarge)
+                    Text("↓ Low 75°", color = NewtWeather.lowColor(), fontFamily = NewtFonts.Mono, style = MaterialTheme.typography.titleLarge)
+                }
             }
         }
     }
+
+    @Composable
+    private fun WeatherIcon(condition: String, isDaytime: Boolean) = Icon(
+        painter = painterResource(NewtWeather.icon(condition, isDaytime)),
+        contentDescription = NewtWeather.words(condition),
+        tint = MaterialTheme.colorScheme.primary,
+        modifier = Modifier.size(32.dp),
+    )
 
     @Test
     fun galleryDark() = composeRule.newtScreenshot("gallery-dark", dark = true) { Gallery() }
