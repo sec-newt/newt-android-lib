@@ -1,0 +1,111 @@
+name: Build library
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  # Publishing a GitHub release (tag v1.2.0) publishes version 1.2.0 to GitHub Packages.
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: Tests, screenshots, accessibility and lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6
+
+      - name: Gallery screenshots and accessibility tests
+        run: ./gradlew --no-daemon recordRoborazziDebug
+
+      - name: Lint (includes Android security checks)
+        run: ./gradlew --no-daemon lintDebug
+
+      - name: Upload screenshots for review
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: screenshots
+          path: newt-test/build/screenshots/
+          if-no-files-found: ignore
+
+      - name: Upload test and lint reports
+        if: failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: reports
+          path: |
+            */build/reports/
+            */build/test-results/
+
+  secrets-scan:
+    name: Secret scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+      - name: Scan the full history for leaked keys and passwords
+        run: |
+          # Pinned version, checked against its published checksum before it runs.
+          curl -sSL -o gitleaks.tar.gz \
+            https://github.com/gitleaks/gitleaks/releases/download/v8.21.2/gitleaks_8.21.2_linux_x64.tar.gz
+          echo "5bc41815076e6ed6ef8fbecc9d9b75bcae31f39029ceb55da08086315316e3ba  gitleaks.tar.gz" | sha256sum -c -
+          tar -xzf gitleaks.tar.gz gitleaks
+          ./gitleaks git --redact --verbose .
+
+  build:
+    name: Build library
+    needs: [checks, secrets-scan]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6
+
+      - name: Build and package both modules (a dry run of publishing)
+        run: ./gradlew --no-daemon publishToMavenLocal
+
+  publish:
+    name: Publish to GitHub Packages
+    # Only from a published release, and only after every check passed.
+    if: github.event_name == 'release'
+    needs: [checks, secrets-scan, build]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6
+
+      - name: Publish
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          # v1.2.0 → 1.2.0; anything that isn't a plain version stops here.
+          LIB_VERSION="${TAG#v}"
+          [[ "$LIB_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo "::error::Release tag must look like v1.2.0"; exit 1; }
+          export LIB_VERSION
+          ./gradlew --no-daemon publish
