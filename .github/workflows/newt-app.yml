@@ -15,8 +15,11 @@
 #       permissions:
 #         contents: write
 #         packages: read
+#         actions: read
+#         security-events: write
 #
-# The checks then show up as "Newt / Secret scan" and so on. Everything runs against the
+# The checks then show up as "Newt / Secret scan" and so on. CodeQL security scanning runs
+# here too, so turn off GitHub's automatic CodeQL setup in the app (gh-harden.sh does). Everything runs against the
 # calling app's own code; app-specific scripts (like scripts/check-permissions.sh) live there.
 name: Newt app build
 
@@ -99,6 +102,51 @@ jobs:
           echo "5bc41815076e6ed6ef8fbecc9d9b75bcae31f39029ceb55da08086315316e3ba  gitleaks.tar.gz" | sha256sum -c -
           tar -xzf gitleaks.tar.gz gitleaks
           ./gitleaks git --redact --verbose .
+
+  codeql:
+    name: CodeQL (${{ matrix.language }})
+    # Security scanning of the app's Kotlin code and its workflow files. It lives here,
+    # not in GitHub's automatic setup, because building the app needs the token that
+    # downloads the Newt library; the automatic setup has no way to pass it one.
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+      actions: read
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - language: java-kotlin
+            build-mode: manual
+          - language: actions
+            build-mode: none
+    env:
+      # Lets Gradle download the shared Newt library (read-only).
+      GITHUB_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6
+        if: matrix.build-mode == 'manual'
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6
+        if: matrix.build-mode == 'manual'
+
+      - uses: github/codeql-action/init@24c54180a607b1449ed407dd24f251e4e9147c8d # v4.38.3
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
+
+      - name: Build the app for analysis
+        if: matrix.build-mode == 'manual'
+        run: ./gradlew --no-daemon --no-build-cache assembleDebug
+
+      - uses: github/codeql-action/analyze@24c54180a607b1449ed407dd24f251e4e9147c8d # v4.38.3
+        with:
+          category: "/language:${{ matrix.language }}"
 
   apk:
     name: Build test APK
