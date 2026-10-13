@@ -9,6 +9,7 @@ import android.graphics.Typeface
 import android.net.Uri
 import android.os.Handler
 import android.os.Looper
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -125,7 +126,9 @@ fun NewtLookTheme(look: NewtLook, content: @Composable () -> Unit) {
             content()
         } else {
             MaterialTheme(colorScheme = MaterialTheme.colorScheme, typography = terminalTypography(MaterialTheme.typography)) {
-                Box(Modifier.fillMaxSize()) {
+                // The theme's own background first, then the gadget, then the screen (whose
+                // background is see-through, so the gadget shows): never relies on the window.
+                Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
                     NewtGadgetBackground()
                     content()
                 }
