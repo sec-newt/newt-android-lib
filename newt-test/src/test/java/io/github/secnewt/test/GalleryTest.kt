@@ -23,6 +23,9 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import io.github.secnewt.ui.CardTitle
 import io.github.secnewt.ui.NewtFonts
+import io.github.secnewt.ui.NewtLook
+import io.github.secnewt.ui.NewtLookTheme
+import io.github.secnewt.ui.NewtPromptLine
 import io.github.secnewt.ui.NewtWeather
 import io.github.secnewt.ui.ScreenHeader
 import io.github.secnewt.ui.SectionHeading
@@ -53,8 +56,8 @@ class GalleryTest {
     val composeRule = createComposeRule()
 
     @Composable
-    private fun Gallery() {
-        Surface(color = MaterialTheme.colorScheme.background) {
+    private fun Gallery(transparent: Boolean = false) {
+        Surface(color = if (transparent) androidx.compose.ui.graphics.Color.Transparent else MaterialTheme.colorScheme.background) {
             Column(
                 modifier = Modifier
                     .verticalScroll(rememberScrollState())
@@ -105,6 +108,21 @@ class GalleryTest {
         tint = MaterialTheme.colorScheme.primary,
         modifier = Modifier.size(32.dp),
     )
+
+    /** The terminal look: the same pieces in JetBrains Mono over scanlines and the ASCII newt. */
+    @Composable
+    private fun TerminalGallery() = NewtLookTheme(NewtLook.TERMINAL) {
+        Column {
+            NewtPromptLine("gallery", "ls --all", title = "Gallery", modifier = Modifier.padding(horizontal = 16.dp))
+            Gallery(transparent = true)
+        }
+    }
+
+    @Test
+    fun galleryTerminalDark() = composeRule.newtScreenshot("gallery-terminal-dark", dark = true) { TerminalGallery() }
+
+    @Test
+    fun galleryTerminalLight() = composeRule.newtScreenshot("gallery-terminal-light", dark = false) { TerminalGallery() }
 
     @Test
     fun galleryDark() = composeRule.newtScreenshot("gallery-dark", dark = true) { Gallery() }
