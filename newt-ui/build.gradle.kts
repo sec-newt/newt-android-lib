@@ -31,4 +31,6 @@ dependencies {
     api(libs.androidx.ui)
     api(libs.androidx.material3)
     implementation(libs.androidx.material.icons.core)
+    // Loads the bundled font to draw the ASCII newt.
+    implementation(libs.androidx.core.ktx)
 }
