@@ -13,6 +13,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.Typography
@@ -130,7 +131,11 @@ fun NewtLookTheme(look: NewtLook, content: @Composable () -> Unit) {
                 // background is see-through, so the gadget shows): never relies on the window.
                 Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
                     NewtGadgetBackground()
-                    content()
+                    // A see-through screen has no text color of its own (Android falls back to
+                    // black), so give it the theme's.
+                    CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onBackground) {
+                        content()
+                    }
                 }
             }
         }
