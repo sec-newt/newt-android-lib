@@ -31,6 +31,8 @@ import androidx.compose.ui.unit.sp
 /** Screen title with a large back button. */
 @Composable
 fun ScreenHeader(title: String, onBack: () -> Unit) {
+    // In the terminal look, each screen opens with its own terminal line.
+    NewtPromptLine(LocalNewtHost.current, NewtLook.command(title), title = null)
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -53,7 +55,7 @@ fun CardTitle(text: String) {
     Text(
         text = text,
         style = MaterialTheme.typography.titleLarge,
-        fontFamily = NewtFonts.Display,
+        fontFamily = if (terminalLook()) NewtFonts.Mono else NewtFonts.Display,
         fontWeight = FontWeight.Bold,
         letterSpacing = 0.5.sp,
         color = MaterialTheme.colorScheme.tertiary,
@@ -78,7 +80,7 @@ fun SectionHeading(text: String, modifier: Modifier = Modifier) {
     Text(
         text = text,
         style = MaterialTheme.typography.titleLarge,
-        fontFamily = NewtFonts.Display,
+        fontFamily = if (terminalLook()) NewtFonts.Mono else NewtFonts.Display,
         fontWeight = FontWeight.Bold,
         color = MaterialTheme.colorScheme.primary,
         modifier = modifier.semantics { heading() },
@@ -106,6 +108,7 @@ fun neonFieldColors(): TextFieldColors = OutlinedTextFieldDefaults.colors(
 /** Title of a main tab, with the Settings gear in the top-right corner. */
 @Composable
 fun TabHeader(title: String, onOpenSettings: () -> Unit) {
+    NewtPromptLine(LocalNewtHost.current, NewtLook.command(title), title = null)
     Row(verticalAlignment = Alignment.CenterVertically) {
         Text(
             text = title,
