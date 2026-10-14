@@ -54,7 +54,20 @@ import androidx.core.content.res.ResourcesCompat
  * app. Newt Home is the one switch; it shares the setting (read-only) with apps signed with
  * the Newt key, through a signature permission nobody is asked for.
  */
-enum class NewtLook { TERMINAL, CLEAN }
+enum class NewtLook {
+    TERMINAL,
+    CLEAN,
+    ;
+
+    companion object {
+        /** A screen title as a terminal command: "Spam protection" → "spam-protection". */
+        fun command(title: String): String =
+            title.lowercase().replace(Regex("[^a-z0-9]+"), "-").trim('-')
+    }
+}
+
+/** The app's name in terminal lines (`newt@phone:~$`); set by [NewtLookTheme]. */
+val LocalNewtHost = staticCompositionLocalOf { "newt" }
 
 /** The look in force. Apps provide it with [NewtLookTheme]; anything else sees the clean look. */
 val LocalNewtLook = staticCompositionLocalOf { NewtLook.CLEAN }
@@ -121,8 +134,8 @@ fun rememberFamilyLook(): NewtLook {
  * using [Scaffold] should pass `containerColor = newtContainerColor()` so they show through.
  */
 @Composable
-fun NewtLookTheme(look: NewtLook, content: @Composable () -> Unit) {
-    CompositionLocalProvider(LocalNewtLook provides look) {
+fun NewtLookTheme(look: NewtLook, host: String = "newt", content: @Composable () -> Unit) {
+    CompositionLocalProvider(LocalNewtLook provides look, LocalNewtHost provides host) {
         if (look == NewtLook.CLEAN) {
             content()
         } else {

@@ -111,7 +111,7 @@ class GalleryTest {
 
     /** The terminal look: the same pieces in JetBrains Mono over scanlines and the ASCII newt. */
     @Composable
-    private fun TerminalGallery() = NewtLookTheme(NewtLook.TERMINAL) {
+    private fun TerminalGallery() = NewtLookTheme(NewtLook.TERMINAL, host = "gallery") {
         Column {
             NewtPromptLine("gallery", "ls --all", title = "Gallery", modifier = Modifier.padding(horizontal = 16.dp))
             Gallery(transparent = true)
