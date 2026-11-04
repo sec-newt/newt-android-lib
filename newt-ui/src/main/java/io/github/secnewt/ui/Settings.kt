@@ -133,7 +133,8 @@ fun NewtSettingsCard(
             }
             Text(
                 text = title,
-                fontFamily = NewtFonts.Display,
+                // Like CardTitle: JetBrains Mono in the terminal look.
+                fontFamily = if (terminalLook()) NewtFonts.Mono else NewtFonts.Display,
                 fontWeight = FontWeight.Bold,
                 fontSize = 19.sp,
                 color = MaterialTheme.colorScheme.tertiary,

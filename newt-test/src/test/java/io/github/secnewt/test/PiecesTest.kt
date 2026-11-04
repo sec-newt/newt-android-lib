@@ -28,6 +28,10 @@ import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import io.github.secnewt.ui.NewtInfo
+import io.github.secnewt.ui.NewtFonts
+import io.github.secnewt.ui.NewtLook
+import io.github.secnewt.ui.NewtLookTheme
+import io.github.secnewt.ui.NewtSettingsCard
 import androidx.compose.ui.test.assertHeightIsAtLeast
 import io.github.secnewt.ui.NewtStepState
 import io.github.secnewt.ui.NewtStep
@@ -263,5 +267,17 @@ class PiecesTest {
         show { NewtSteps(steps) }
         composeRule.onNodeWithText("Turn on").assertIsDisplayed()
         composeRule.onNodeWithText("Never shown").assertDoesNotExist()
+    }
+    @Test
+    fun cardHeadingUsesTerminalFontInTerminalLook() {
+        composeRule.setContent {
+            NewtTheme(darkTheme = true) {
+                NewtLookTheme(NewtLook.TERMINAL) { NewtReadingText { NewtSettingsCard("Ring on silent") {} } }
+            }
+        }
+        val node = composeRule.onNodeWithText("Ring on silent", useUnmergedTree = true).fetchSemanticsNode()
+        val results = mutableListOf<TextLayoutResult>()
+        node.config[SemanticsActions.GetTextLayoutResult].action?.invoke(results)
+        assertEquals(NewtFonts.Mono, results.single().layoutInput.style.fontFamily)
     }
 }
