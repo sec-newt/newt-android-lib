@@ -1,0 +1,332 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Chakra+Petch:wght@600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050608;--s1:#0E1118;--s2:#161B26;--ln:#232B42;--tx:#EEF1FA;--mu:#B8C0DA;--bl:#85ABF8;--pu:#BB9AF7;--cy:#7DCFFF;--gr:#9ECE6A;--rd:#FF7A93;--or:#FF9E64;--yl:#E0AF68;--grad:linear-gradient(135deg,#85ABF8,#BB9AF7)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Atkinson Hyperlegible',sans-serif;padding:4px 0}
+h1{font:700 26px 'Chakra Petch';margin:8px 0 4px}
+h2{font:700 22px 'Chakra Petch';margin:30px 0 6px}
+.why{font-size:15px;line-height:1.45;margin-bottom:12px;opacity:.92}
+.why b{color:var(--primary)}
+.row{display:flex;gap:16px;justify-content:center;align-items:flex-start}
+.col{display:flex;flex-direction:column;align-items:center;gap:6px}
+.tag{font:700 13px 'JetBrains Mono';letter-spacing:.08em;padding:3px 10px;border-radius:99px;border:1px solid var(--border)}
+.tag.new{background:var(--grad);color:#0A0B10;border:0}
+.before{width:340px;border-radius:22px;border:2px solid #333;display:block}
+.ph{width:340px;height:720px;background:var(--bg);color:var(--tx);border-radius:22px;border:2px solid #333;overflow:hidden;display:flex;flex-direction:column;position:relative}
+.mono{font-family:'JetBrains Mono',monospace}
+.hd{display:flex;align-items:center;gap:12px;padding:14px 14px 10px}
+.hd .t{font:700 26px 'Chakra Petch'}
+.sq{width:48px;height:48px;border-radius:14px;border:2px solid var(--bl);display:grid;place-items:center;font-size:21px;flex:none}
+.sum{margin:0 14px 12px;padding:12px 14px;border-radius:14px;background:var(--s2);border-left:6px solid var(--gr);font-size:17px;line-height:1.35}
+.sum .k{font:700 13px 'JetBrains Mono';letter-spacing:.12em;color:var(--gr);display:block;margin-bottom:2px}
+.card{background:var(--s1);border:2px solid var(--ln);border-radius:18px;margin:0 14px 12px;overflow:hidden;flex:none}
+.ch{display:flex;align-items:center;gap:10px;padding:11px 14px 9px;font:700 19px 'Chakra Petch';color:var(--cy)}
+.r{display:flex;align-items:center;gap:12px;padding:10px 14px;border-top:2px solid var(--ln);min-height:62px}
+.r .tx{flex:1;min-width:0}
+.lb{font-size:19px;font-weight:700;line-height:1.15}
+.hp{font-size:16px;color:var(--mu);margin-top:2px;line-height:1.25}
+.sw{width:74px;height:40px;border-radius:99px;display:flex;align-items:center;font:700 15px 'JetBrains Mono';flex:none;padding:0 5px;gap:6px}
+.sw:before{content:"";width:30px;height:30px;border-radius:50%}
+.sw.on{background:var(--grad);color:#0A0B10;flex-direction:row-reverse;justify-content:space-between;padding-left:12px}
+.sw.on:before{background:#0A0B10}
+.sw.off{border:2.5px solid var(--mu);color:var(--mu);justify-content:space-between;padding-right:10px}
+.sw.off:before{background:var(--mu)}
+.sw.lock{border:2.5px dashed var(--gr);color:var(--gr);justify-content:center;padding:0;width:auto;padding:0 10px}
+.sw.lock:before{display:none}
+.chip{font:700 15px 'JetBrains Mono';padding:7px 10px;border-radius:12px;flex:none;white-space:nowrap}
+.chip.sil{border:2.5px solid var(--rd);color:var(--rd)}
+.chip.ring{border:2.5px solid var(--gr);color:var(--gr)}
+.chip.val{border:2.5px solid var(--bl);color:var(--bl)}
+.go{font-size:24px;color:var(--mu);flex:none}
+.seg{display:flex;margin:4px 14px 10px;border:2.5px solid var(--bl);border-radius:16px;overflow:hidden;flex:none}
+.seg div{flex:1;height:54px;display:grid;place-items:center;font-size:18px;font-weight:700;color:var(--mu)}
+.seg div+div{border-left:2px solid var(--ln)}
+.seg .on{background:var(--grad);color:#0A0B10}
+.card .seg{margin:4px 12px 8px}
+.note{font-size:16px;color:var(--mu);padding:0 14px 12px;line-height:1.3}
+.note b{color:var(--tx)}
+.ic{width:40px;height:40px;border-radius:12px;background:var(--s2);border:2px solid var(--ln);display:grid;place-items:center;font-size:19px;flex:none}
+.btn{height:58px;border-radius:16px;border:2.5px solid var(--bl);display:flex;align-items:center;justify-content:center;gap:10px;font-size:19px;font-weight:700;margin:0 14px 12px;flex:none}
+.btn.fill{background:var(--grad);border:0;color:#0A0B10}
+.btn.green{background:var(--gr);border:0;color:#0A0B10}
+.pick{display:flex;align-items:center;gap:12px;padding:10px 14px;border-top:2px solid var(--ln);min-height:58px}
+.pick .bx{width:30px;height:30px;border-radius:50%;border:3px solid var(--mu);flex:none;display:grid;place-items:center;font-weight:700;font-size:17px}
+.pick.on{background:rgba(133,171,248,.12)}
+.pick.on .bx{background:var(--grad);border:0;color:#0A0B10}
+.cmd{display:flex;flex-wrap:wrap;gap:8px;padding:2px 14px 12px}
+.cmd span{font:700 16px 'JetBrains Mono';padding:8px 12px;border-radius:12px;border:2px solid var(--pu);color:var(--tx)}
+.cmd span.on{background:var(--grad);color:#0A0B10;border-color:transparent}
+.exp{margin:0 14px 12px;padding:10px 12px;border-radius:12px;background:var(--s2);font-size:17px;line-height:1.35;display:flex;gap:10px;align-items:center}
+.av{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font:700 20px 'Atkinson Hyperlegible';color:#0A0B10;flex:none}
+.mini{width:48px;height:48px;border-radius:14px;border:2px solid var(--bl);display:grid;place-items:center;font-size:20px;flex:none}
+.sheet{margin-top:auto;background:var(--s1);border-top:2px solid var(--ln);border-radius:24px 24px 0 0;padding-top:10px}
+.grab{width:48px;height:5px;border-radius:9px;background:var(--mu);margin:0 auto 6px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 14px 12px}
+.tl{background:var(--s2);border:2px solid var(--ln);border-radius:16px;padding:10px 12px;min-height:66px;display:flex;flex-direction:column;justify-content:center}
+.tl .a{font-size:18px;font-weight:700}.tl .b{font-size:16px;color:var(--mu)}
+.sw3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:2px 14px 12px}
+.swc{border-radius:16px;border:2px solid var(--ln);background:var(--s2);padding:8px;text-align:center;font-size:16px;font-weight:700}
+.swc i{display:block;height:40px;border-radius:10px;margin-bottom:6px}
+.swc.on{border:3px solid var(--tx)}
+.swc small{display:block;font-weight:400;color:var(--mu);font-size:15px}
+.alert{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;margin:0 14px 10px;background:linear-gradient(90deg,rgba(255,122,147,.16),var(--s1) 75%);border-left:6px solid var(--rd);flex:none}
+.alert.w{background:linear-gradient(90deg,rgba(224,175,104,.16),var(--s1) 75%);border-color:var(--yl)}
+.pl{font:500 15px 'JetBrains Mono';color:var(--mu);padding:8px 16px 6px}.pl b{color:var(--gr)}
+.day{display:flex;align-items:center;gap:10px;padding:9px 14px;border-top:2px solid var(--ln);font-size:18px}
+.day .d{width:56px;font-weight:700}.day .hi{margin-left:auto;font:700 18px 'JetBrains Mono';color:var(--or)}.day .lo{font:700 18px 'JetBrains Mono';color:var(--cy);width:44px;text-align:right}
+.step{display:flex;gap:12px;align-items:flex-start;margin:0 14px 10px;padding:12px 14px;border-radius:16px;background:var(--s1);border:2px solid var(--ln);flex:none}
+.step .n{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font:700 18px 'JetBrains Mono';flex:none;border:2.5px solid var(--mu);color:var(--mu)}
+.step.now{border-color:var(--bl)}.step.now .n{background:var(--grad);border:0;color:#0A0B10}
+.step.done .n{background:var(--gr);border:0;color:#0A0B10}
+.verdict{display:inline-flex;align-items:center;gap:6px;font:700 15px 'JetBrains Mono';padding:5px 9px;border-radius:10px;margin-top:6px}
+.legend{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:10px}
+.rule{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px}
+.rule>b{display:block;font:700 16px 'Chakra Petch';margin-bottom:4px}
+.rule p{font-size:14px;line-height:1.4;opacity:.9}
+</style></head><body style="background:#111;color:#eee;max-width:728px;margin:auto;--card:#1a1a1a;--border:#444;--radius:10px;--primary:#85ABF8">
+
+<h1>Round 2 · Menus & the rest</h1>
+<p class="why">Same six rules as round 1, plus five that are just for menus. Every menu below uses the <b>same row layout</b>, so once you learn one you can read them all.</p>
+<div class="legend">
+<div class="rule"><b>M1 · The answer comes first</b><p>Every row shows its state as a big word right next to the label: <b>ON / OFF</b> written inside the switch, or a chip like <b>🔕 Silence</b>. No more tiny "Off" stranded at the right edge.</p></div>
+<div class="rule"><b>M2 · One line of help, max</b><p>A paragraph under every row becomes one plain line at 16sp. Longer explanations move behind an <b>ⓘ</b> so they're there when needed but not in the way.</p></div>
+<div class="rule"><b>M3 · Cards, 3–5 rows each</b><p>Each group gets a lifted card with an icon and a heading, so you can tell from the shapes alone where one topic ends and the next begins.</p></div>
+<div class="rule"><b>M4 · "Right now" summary on top</b><p>Big settings screens open with one green box that says in plain words what the phone is doing right now, so you don't have to read every row to find out.</p></div>
+<div class="rule"><b>M5 · Choices as big buttons</b><p>3-option radio lists become segmented buttons, 54dp tall. Only the chosen option's explanation is shown.</p></div>
+<div class="rule"><b>M6 · Danger behind ⋯</b><p>Red "Block / Remove" links repeated on every row add noise and invite mis-taps. Move them into each row's ⋯ menu.</p></div>
+</div>
+
+<!-- 1 PHONE SETTINGS -->
+<h2>1 · Phone → Settings</h2>
+<p class="why">Now: four sections, each with a paragraph, a small "Off" far from its label, and switches with no words. Proposed: a <b>"Right now"</b> summary up top, then cards whose rows all read <b>label → one line → ON/OFF</b>. Spam mode is a two-button choice. Unknown callers and the block list become rows that show their current value.</p>
+<div class="row">
+<div class="col"><span class="tag">NOW</span><img class="before" src="before/newt-phone__settings_custom_dark.png"></div>
+<div class="col"><span class="tag new">PROPOSED</span>
+<div class="ph">
+ <div class="hd"><div class="sq">←</div><div class="t">Settings</div></div>
+ <div class="sum"><span class="k">RIGHT NOW</span>Favorites ring on silent. Spam is <b>watched</b>, not blocked.</div>
+ <div class="card"><div class="ch">🔊 Say who's calling</div>
+  <div class="r"><div class="tx"><div class="lb">Announce callers</div><div class="hp">"Call from Mom"</div></div><div class="sw off">OFF</div></div></div>
+ <div class="card"><div class="ch">🔔 Ring on silent</div>
+  <div class="r"><div class="tx"><div class="lb">Favorites</div><div class="hp">At alarm volume</div></div><div class="sw on">ON</div></div>
+  <div class="r"><div class="tx"><div class="lb">Repeat callers</div><div class="hp">Twice in 3 minutes</div></div><div class="sw on">ON</div></div>
+  <div class="r"><div class="tx"><div class="lb">Quiet hours</div><div class="hp">Only those two, at night</div></div><div class="sw off">OFF</div></div></div>
+ <div class="card"><div class="ch">🛡 Spam protection</div>
+  <div class="seg"><div class="on">◉ Watch</div><div>⛔ Block</div></div>
+  <div class="r"><div class="tx"><div class="lb">Unknown callers</div></div><div class="chip val">Balanced</div><div class="go">›</div></div>
+  <div class="r"><div class="tx"><div class="lb">Block list</div></div><div class="chip val">2</div><div class="go">›</div></div></div>
+</div></div></div>
+
+<!-- 2 UNKNOWN CALLERS -->
+<h2>2 · Phone → Unknown callers</h2>
+<p class="why">Now: five rows that all say a small blue "Silence" on the far right, then paragraphs. Proposed: the level picker is <b>big</b>, with <b>one sentence</b> explaining the chosen level. Each rule gets a <b>🔕 Silence</b> or <b>🔔 Ring</b> chip (word + icon + shape). The 911 rule is shown as <b>🔒 Always</b>, so it's clear you can't turn it off.</p>
+<div class="row">
+<div class="col"><span class="tag">NOW</span><img class="before" src="before/newt-phone__settings_unknown-callers_dark.png"></div>
+<div class="col"><span class="tag new">PROPOSED</span>
+<div class="ph">
+ <div class="hd"><div class="sq">←</div><div class="t">Unknown callers</div></div>
+ <div class="seg"><div>Off</div><div class="on">Balanced</div><div>Strict</div></div>
+ <div class="note"><b>Balanced:</b> suspicious numbers are silenced. Your contacts always ring.</div>
+ <div class="card"><div class="ch">🕵 Numbers you don't know</div>
+  <div class="r"><div class="tx"><div class="lb">New numbers</div></div><div class="chip sil">🔕 Silence</div></div>
+  <div class="r"><div class="tx"><div class="lb">Likely spam</div></div><div class="chip sil">🔕 Silence</div></div>
+  <div class="r"><div class="tx"><div class="lb">Hidden numbers</div></div><div class="chip sil">🔕 Silence</div></div>
+  <div class="r"><div class="tx"><div class="lb">Made-up · Copycat</div><div class="hp">ⓘ What are these?</div></div><div class="chip sil">🔕 Silence</div></div></div>
+ <div class="card"><div class="ch">✅ Always let through</div>
+  <div class="r"><div class="tx"><div class="lb">Call-backs</div><div class="hp">1 hour after you call</div></div><div class="sw on">ON</div></div>
+  <div class="r"><div class="tx"><div class="lb">After 911</div></div><div class="sw lock">🔒 Always</div></div></div>
+</div></div></div>
+
+<!-- 3 SPAM / CALLS -->
+<h2>3 · Phone → Calls (spam protection)</h2>
+<p class="why">Now: the verdict ("Would silence: failed carrier verification") is small text in a long list, and "Block this number" is a link. Proposed: each screened call gets a <b>verdict chip</b> (red would-silence / green verified) and a <b>real Block button</b>. The status card is one bold line you can tap.</p>
+<div class="row">
+<div class="col"><span class="tag">NOW</span><img class="before" src="before/newt-phone__spam-protection_on_calls_dark.png"></div>
+<div class="col"><span class="tag new">PROPOSED</span>
+<div class="ph">
+ <div class="hd"><div class="t" style="flex:1">Calls</div><div class="sq">⚙</div></div>
+ <div class="sum" style="border-color:var(--bl)"><span class="k" style="color:var(--bl)">SPAM PROTECTION · WATCHING</span>Every call rings. Below is what <b>would</b> have been silenced.</div>
+ <div class="card"><div class="ch">📋 Screened today</div>
+  <div class="r" style="align-items:flex-start;border-left:6px solid var(--rd)"><div class="tx"><div class="lb mono">(555) 019‑7731</div><div class="hp">5:00 PM</div><div class="verdict" style="border:2px solid var(--rd);color:var(--rd)">🔕 Would silence</div><div class="hp" style="margin-top:4px">Failed carrier check</div></div><div class="mini" style="border-color:var(--rd);color:var(--rd);width:auto;padding:0 10px;font-size:16px;font-weight:700">⛔ Block</div></div>
+  <div class="r" style="align-items:flex-start;border-left:6px solid var(--gr)"><div class="tx"><div class="lb mono">(555) 014‑2290</div><div class="hp">3:00 PM</div><div class="verdict" style="border:2px solid var(--gr);color:var(--gr)">✓ Verified</div></div><div class="mini" style="width:auto;padding:0 10px;font-size:16px;font-weight:700">⛔ Block</div></div></div>
+ <div class="card"><div class="ch">📋 Yesterday</div>
+  <div class="r" style="align-items:flex-start;border-left:6px solid var(--rd)"><div class="tx"><div class="lb">Hidden number</div><div class="hp">10:00 PM</div><div class="verdict" style="border:2px solid var(--rd);color:var(--rd)">🔕 Would silence</div></div></div></div>
+</div></div></div>
+
+<!-- 4 MESSAGES SETTINGS -->
+<h2>4 · Messages → Settings</h2>
+<p class="why">Now: two radio lists, 6 options, each with a small description, plus two switches with long explanations. Proposed: each choice is <b>one row with a big check</b>, and only the <b>chosen</b> one shows its description. Voice options become a 3-button choice. "Test the voice" is a real button.</p>
+<div class="row">
+<div class="col"><span class="tag">NOW</span><img class="before" src="before/newt-messages__settings-dark.png"></div>
+<div class="col"><span class="tag new">PROPOSED</span>
+<div class="ph">
+ <div class="hd"><div class="sq">←</div><div class="t">Settings</div></div>
+ <div class="card"><div class="ch">♥ When someone reacts</div>
+  <div class="pick on"><div class="bx">✓</div><div class="tx"><div class="lb">Quiet note</div><div class="hp">"Becca ♥ your message"</div></div></div>
+  <div class="pick"><div class="bx"></div><div class="lb">Like a text, with sound</div></div>
+  <div class="pick"><div class="bx"></div><div class="lb">Don't notify</div></div></div>
+ <div class="card"><div class="ch">🔊 Say who's messaging</div>
+  <div class="seg"><div class="on">Off</div><div>Always</div><div style="font-size:16px">🎧 Only</div></div>
+  <div class="r"><div class="tx"><div class="lb">Quiet in Do Not Disturb</div></div><div class="sw on">ON</div></div>
+  <div class="r"><div class="tx"><div class="lb">Read the message too</div><div class="hp">Never reads codes</div></div><div class="sw off">OFF</div></div></div>
+ <div class="btn">▶ Test the voice</div>
+</div></div></div>
+
+<!-- 5 HOME COMMANDS -->
+<h2>5 · Home → Commands (help)</h2>
+<p class="why">This is the biggest wall of text right now: 14 commands, each with a paragraph. Proposed: a <b>cheat sheet</b>. Commands are grouped by what they do, each one is a chip you can tap, and tapping shows <b>one line + "Try it"</b>. There's a search box at the top, and the grouping makes it easy to find things.</p>
+<div class="row">
+<div class="col"><span class="tag">NOW</span><img class="before" src="before/newt-home__clean_help_dark.png"></div>
+<div class="col"><span class="tag new">PROPOSED</span>
+<div class="ph">
+ <div class="hd"><div class="t" style="flex:1">Commands</div><div class="sq">✕</div></div>
+ <div class="btn" style="justify-content:flex-start;padding-left:16px;color:var(--mu);border-color:var(--pu);font-weight:400">🔍 Find a command</div>
+ <div class="card"><div class="ch">⏱ Time</div><div class="cmd"><span class="on">timer 10</span><span>alarm 7:30</span></div>
+  <div class="exp"><span style="flex:1">10-minute timer. Also <b class="mono">90s</b>, <b class="mono">1h30m</b></span><span class="chip ring" style="background:var(--gr);color:#0A0B10;border-color:var(--gr)">▶ Try</span></div></div>
+ <div class="card"><div class="ch">📞 People</div><div class="cmd"><span>call mom</span><span>text becca</span></div></div>
+ <div class="card"><div class="ch">⚙ Phone</div><div class="cmd"><span>wifi</span><span>bluetooth</span><span>flashlight</span><span>sys</span></div></div>
+ <div class="card"><div class="ch">📂 Apps & look</div><div class="cmd"><span>ls</span><span>files</span><span>look clean</span><span>look terminal</span></div></div>
+ <div class="card"><div class="ch">🤖 Ask Claude</div><div class="cmd"><span>ask …</span></div></div>
+</div></div></div>
+
+<!-- 6 HOLD MENU -->
+<h2>6 · Home → Press-and-hold menu</h2>
+<p class="why">Now this is a decent list, but it's 7 rows with small grey subtitles, so the actions look the same and get lost. Proposed: <b>Jump-to shortcuts on top</b> as big chips, then a <b>2-column grid</b> of actions, with words first and a hint only where it matters ("Search still finds it"). Cancel stays at the bottom.</p>
+<div class="row">
+<div class="col"><span class="tag">NOW</span><img class="before" src="before/newt-home__clean_hold_menu_dark.png"></div>
+<div class="col"><span class="tag new">PROPOSED</span>
+<div class="ph" style="background:#020203">
+ <div style="font:700 80px 'JetBrains Mono';letter-spacing:-4px;padding:16px 18px;opacity:.25">13:22</div>
+ <div class="sheet">
+  <div class="grab"></div>
+  <div class="hd" style="padding-top:4px"><div class="sq" style="background:var(--grad);border:0;color:#0A0B10;font:700 20px 'JetBrains Mono'">S</div><div class="t">Signal</div></div>
+  <div class="ch" style="padding-top:0">↪ Jump to</div>
+  <div class="cmd"><span style="font-family:'Atkinson Hyperlegible';font-size:17px">✏ New message</span><span style="font-family:'Atkinson Hyperlegible';font-size:17px">💬 Sam</span></div>
+  <div class="g2">
+   <div class="tl"><div class="a">☆ Unfavorite</div><div class="b">Stays in All apps</div></div>
+   <div class="tl"><div class="a">📁 To folder</div></div>
+   <div class="tl"><div class="a">▲ Move up</div></div>
+   <div class="tl"><div class="a">▼ Move down</div></div>
+   <div class="tl"><div class="a">🔍 Search words</div><div class="b">Like "bank"</div></div>
+   <div class="tl"><div class="a">🙈 Hide</div><div class="b">Search still finds it</div></div>
+  </div>
+  <div class="two" style="display:flex;gap:8px;padding:0 14px 14px"><div class="btn" style="flex:1;margin:0">ⓘ App info</div><div class="btn" style="flex:1;margin:0;border-color:var(--mu)">Cancel</div></div>
+ </div>
+</div></div></div>
+
+<!-- 7 GROUP DETAILS -->
+<h2>7 · Messages → Group details</h2>
+<p class="why">Now: each person has 3 buttons plus <b>two red links</b>, so it's 6 red lines on one screen. Proposed: one card per person with <b>worded Text and Call buttons</b> and a <b>⋯</b> button. Block, Remove and Color live in ⋯. The person's color shows as a stripe <i>and</i> is written out ("Yellow").</p>
+<div class="row">
+<div class="col"><span class="tag">NOW</span><img class="before" src="before/newt-messages__group-details-dark.png"></div>
+<div class="col"><span class="tag new">PROPOSED</span>
+<div class="ph">
+ <div class="hd"><div class="sq">←</div><div class="t" style="flex:1">Family</div><div class="mini" style="width:auto;padding:0 12px;font-size:17px;font-weight:700">✏ Rename</div></div>
+ <div class="note" style="font-size:17px">4 people, plus you</div>
+ <div class="card">
+    <div style="border-top:0;border-top:2px solid var(--ln);border-left:6px solid var(--yl);padding:10px 12px"><div style="display:flex;gap:12px;align-items:center"><div class="av" style="background:var(--yl)">B</div><div><div class="lb">Becca</div><div class="hp">Yellow · mobile</div></div></div><div style="display:flex;gap:8px;margin-top:8px"><div class="mini" style="flex:1;font-size:17px;font-weight:700">💬 Text</div><div class="mini" style="flex:1;font-size:17px;font-weight:700">📞 Call</div><div class="mini" style="width:56px">⋯</div></div></div>
+  <div style="border-top:2px solid var(--ln);border-left:6px solid var(--cy);padding:10px 12px"><div style="display:flex;gap:12px;align-items:center"><div class="av" style="background:var(--cy)">S</div><div><div class="lb">Sam</div><div class="hp">Teal · mobile</div></div></div><div style="display:flex;gap:8px;margin-top:8px"><div class="mini" style="flex:1;font-size:17px;font-weight:700">💬 Text</div><div class="mini" style="flex:1;font-size:17px;font-weight:700">📞 Call</div><div class="mini" style="width:56px">⋯</div></div></div>
+  <div style="border-top:2px solid var(--ln);border-left:6px solid var(--gr);padding:10px 12px"><div style="display:flex;gap:12px;align-items:center"><div class="av" style="background:var(--gr)">M</div><div><div class="lb">Mom</div><div class="hp">Green · home</div></div></div><div style="display:flex;gap:8px;margin-top:8px"><div class="mini" style="flex:1;font-size:17px;font-weight:700">💬 Text</div><div class="mini" style="flex:1;font-size:17px;font-weight:700">📞 Call</div><div class="mini" style="width:56px">⋯</div></div></div>
+ </div>
+ <div class="ch" style="padding-left:18px">⋯ menu for Becca</div>
+ <div class="card"><div class="r" style="border-top:0"><div class="ic">🎨</div><div class="lb" style="flex:1">Change color</div></div><div class="r"><div class="ic">➖</div><div class="lb" style="flex:1">Remove from group</div></div><div class="r"><div class="ic" style="border-color:var(--rd)">⛔</div><div class="lb red" style="flex:1;color:var(--rd)">Block Becca</div></div></div>
+</div></div></div>
+
+<!-- 8 COLOR PICKER -->
+<h2>8 · Messages → Color picker</h2>
+<p class="why">Now: a 13-row list that you have to scroll. Proposed: a <b>3-column swatch grid</b> that fits on one screen. Each swatch is a big block of color with its name, colors someone already has show <b>who has it</b>, and the current one gets a thick ring and a ✓. "Where" becomes a two-button choice.</p>
+<div class="row">
+<div class="col"><span class="tag">NOW</span><img class="before" src="before/newt-messages__color-picker-dark.png"></div>
+<div class="col"><span class="tag new">PROPOSED</span>
+<div class="ph">
+ <div class="hd"><div class="sq">←</div><div class="t">Sam's color</div></div>
+ <div class="seg"><div class="on">This chat</div><div>Every chat</div></div>
+ <div class="sw3">
+  <div class="swc"><i style="background:repeating-linear-gradient(45deg,#3a4160 0 8px,#232B42 8px 16px)"></i>Automatic</div>
+  <div class="swc"><i style="background:var(--bl)"></i>Blue<small>You</small></div>
+  <div class="swc on"><i style="background:var(--pu)"></i>✓ Purple</div>
+  <div class="swc"><i style="background:var(--cy)"></i>Cyan</div>
+  <div class="swc"><i style="background:var(--gr)"></i>Green<small>Mom</small></div>
+  <div class="swc"><i style="background:var(--or)"></i>Orange</div>
+  <div class="swc"><i style="background:var(--rd)"></i>Red</div>
+  <div class="swc"><i style="background:var(--yl)"></i>Yellow<small>Becca</small></div>
+  <div class="swc"><i style="background:#73DACA"></i>Teal</div>
+  <div class="swc"><i style="background:#FF9EE6"></i>Pink</div>
+  <div class="swc"><i style="background:#C3E88D"></i>Lime</div>
+  <div class="swc"><i style="background:#C8C8F8"></i>Lavender</div>
+ </div>
+</div></div></div>
+
+<!-- 9 WEATHER -->
+<h2>9 · Weather (terminal look)</h2>
+<p class="why">The terminal look stays. Now: the warning-notifications paragraph takes up as much room as the forecast. Proposed: alerts are <b>one-line rows with a colored stripe and icon</b> (red = Warning, amber = Watch). Notifications become a single ON/OFF row. That frees room for the <b>7-day forecast</b> to show on the first screen.</p>
+<div class="row">
+<div class="col"><span class="tag">NOW</span><img class="before" src="before/newt-weather__terminal-weather-dark.png"></div>
+<div class="col"><span class="tag new">PROPOSED</span>
+<div class="ph mono" style="background:repeating-linear-gradient(0deg,rgba(170,190,255,.045) 0 1px,transparent 1px 4px),#050608">
+ <div style="font:700 24px 'JetBrains Mono';padding:14px 16px 0">Oklahoma City, OK</div>
+ <div class="pl"><b>newt@weather:~$</b> now</div>
+ <div class="card" style="display:flex;align-items:center;gap:14px;padding:12px 16px"><div style="font-size:52px">🌤</div><div><div style="font:700 54px 'JetBrains Mono';line-height:1">82°</div><div style="font-size:18px;margin-top:4px">Mostly sunny</div><div style="font-size:18px;font-weight:700;color:var(--or)">↑ High 90°</div></div></div>
+ <div class="pl"><b>newt@weather:~$</b> alerts</div>
+ <div class="alert"><div style="font-size:22px">⚠</div><div style="flex:1"><div style="font-size:19px;font-weight:700;color:var(--rd)">Flood Warning</div><div style="font-size:16px;color:var(--mu)">until Thu 2 PM</div></div><div class="go">›</div></div>
+ <div class="alert w"><div style="font-size:22px">◉</div><div style="flex:1"><div style="font-size:19px;font-weight:700;color:var(--yl)">Flood Watch</div><div style="font-size:16px;color:var(--mu)">until Wed 10 AM</div></div><div class="go">›</div></div>
+ <div class="card" style="font-family:'Atkinson Hyperlegible'"><div class="r" style="border-top:0"><div class="tx"><div class="lb">🔔 Warning alerts</div><div class="hp">Tornado · storm · flood · freeze</div></div><div class="sw off">OFF</div></div></div>
+ <div class="pl"><b>newt@weather:~$</b> forecast --7d</div>
+ <div class="card"><div class="day" style="border-top:0"><span class="d">Thu</span>⛈ Storms<span class="hi">88°</span><span class="lo">71°</span></div><div class="day"><span class="d">Fri</span>🌤 Sunny<span class="hi">90°</span><span class="lo">72°</span></div><div class="day"><span class="d">Sat</span>☁ Cloudy<span class="hi">84°</span><span class="lo">68°</span></div></div>
+</div></div></div>
+
+<!-- 10 MAPS DRIVING -->
+<h2>10 · Maps → Driving</h2>
+<p class="why">Now: the next turn is in a medium-sized card, and the bottom bar is small. Proposed: the <b>turn is the hero</b>, with a 72px arrow, a 48px distance and a 26px street name, readable at a glance on a phone mount. "Then" gets its own line. The bottom has <b>worded 64dp buttons</b> (Voice / End) and the arrival time in large type.</p>
+<div class="row">
+<div class="col"><span class="tag">NOW</span><img class="before" src="before/newt-maps__driving-dark.png"></div>
+<div class="col"><span class="tag new">PROPOSED</span>
+<div class="ph" style="background:#0A0D14">
+ <div style="background:var(--s1);border-bottom:3px solid var(--bl);padding:16px">
+  <div style="display:flex;align-items:center;gap:16px"><svg width="76" height="76" viewBox="0 0 24 24" style="flex:none"><path d="M5 21V12a4 4 0 0 1 4-4h8" fill="none" stroke="#85ABF8" stroke-width="3" stroke-linecap="round"/><path d="M14 4l5 4-5 4" fill="none" stroke="#85ABF8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><div><div style="font:700 48px 'JetBrains Mono';line-height:1">0.3 mi</div><div style="font-size:26px;font-weight:700;margin-top:6px">Broadway Blvd</div></div></div>
+  <div style="margin-top:12px;padding:10px 12px;border-radius:12px;background:var(--s2);font-size:19px">Then <b>↰ left</b> on Main St</div>
+ </div>
+ <div style="flex:1;background:repeating-linear-gradient(90deg,transparent 0 70px,#141a28 70px 74px),repeating-linear-gradient(0deg,transparent 0 90px,#141a28 90px 94px);position:relative"><div style="position:absolute;left:150px;top:60%;font-size:34px;color:var(--bl)">▲</div></div>
+ <div style="background:var(--s1);border-top:2px solid var(--ln);padding:14px">
+  <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:12px"><span style="font:700 30px 'JetBrains Mono'">9 min</span><span style="font-size:20px;color:var(--mu)">3.8 mi · arrive <b style="color:var(--tx)">3:45</b></span></div>
+  <div style="display:flex;gap:10px"><div class="btn fill" style="flex:1;margin:0;height:64px">🔊 Voice on</div><div class="btn" style="flex:1;margin:0;height:64px;border-color:var(--rd);color:var(--rd)">✕ End</div></div>
+ </div>
+</div></div></div>
+
+<!-- 11 MAPS PLACE -->
+<h2>11 · Maps → Place card</h2>
+<p class="why">Now: four icon-only buttons (directions, share, copy, open), so you have to guess what each one does. Proposed: <b>Directions is the green primary button</b> with a word on it. The other three are worded buttons, and coordinates move to small text (still copyable).</p>
+<div class="row">
+<div class="col"><span class="tag">NOW</span><img class="before" src="before/newt-maps__map-place-dark.png"></div>
+<div class="col"><span class="tag new">PROPOSED</span>
+<div class="ph" style="background:#0A0D14">
+ <div style="display:flex;gap:10px;padding:14px"><div class="btn" style="flex:1;margin:0;justify-content:flex-start;padding-left:16px;color:var(--mu);border-color:var(--pu);font-weight:400">🔍 Search for a place</div><div class="sq" style="width:58px;height:58px">⚙</div></div>
+ <div style="flex:1;background:repeating-linear-gradient(90deg,transparent 0 70px,#141a28 70px 74px),repeating-linear-gradient(0deg,transparent 0 90px,#141a28 90px 94px);position:relative"><div style="position:absolute;left:150px;top:40%;font-size:38px;color:var(--rd)">📍</div>
+  <div style="position:absolute;right:14px;bottom:12px;display:flex;flex-direction:column;gap:8px"><div class="sq" style="width:58px;height:58px;background:var(--s1)">＋</div><div class="sq" style="width:58px;height:58px;background:var(--s1)">－</div><div class="sq" style="width:58px;height:58px;background:var(--s1)">◎</div></div></div>
+ <div class="sheet" style="margin-top:0">
+  <div class="grab"></div>
+  <div style="display:flex;gap:10px;padding:6px 14px 10px;align-items:flex-start"><div style="flex:1"><div style="font-size:24px;font-weight:700;line-height:1.15">The Catch</div><div style="font-size:18px;color:var(--mu);margin-top:4px">5949 Broadway Blvd</div></div><div class="sq">✕</div></div>
+  <div class="btn green" style="height:64px;font-size:22px">➤ Directions</div>
+  <div style="display:flex;gap:8px;padding:0 14px 16px"><div class="btn" style="flex:1;margin:0;font-size:17px">↗ Share</div><div class="btn" style="flex:1;margin:0;font-size:17px">⧉ Copy</div><div class="btn" style="flex:1;margin:0;font-size:17px">⇱ Open in</div></div>
+ </div>
+</div></div></div>
+
+<!-- 12 FIRST-RUN -->
+<h2>12 · First-run screens (Maps, Reader, Messages)</h2>
+<p class="why">Now: a paragraph, one button, then more paragraphs about what happens next, and the bottom 60% of the screen is empty. Proposed: <b>numbered steps</b>. The current step is lit and has the button, finished steps turn green ✓, and the empty space shows what the app will do for you.</p>
+<div class="row">
+<div class="col"><span class="tag">NOW</span><img class="before" src="before/newt-maps__home-turnon-dark.png"></div>
+<div class="col"><span class="tag new">PROPOSED</span>
+<div class="ph">
+ <div class="hd" style="padding-top:20px"><div class="t" style="font-size:30px">Newt Maps</div></div>
+ <div class="note" style="font-size:18px;color:var(--tx)">Open Google & Apple Maps links in the map app <b>you</b> pick.</div>
+ <div class="step done"><div class="n">✓</div><div><div class="lb">Install a map app</div><div class="hp">Organic Maps found</div></div></div>
+ <div class="step now"><div class="n">2</div><div style="flex:1"><div class="lb">Turn on link opening</div><div class="hp">One time. Turn on every link on the next screen.</div><div class="btn fill" style="margin:10px 0 0">Turn on</div></div></div>
+ <div class="step"><div class="n">3</div><div><div class="lb">Try it</div><div class="hp">Tap any maps link, or Share → Newt Maps</div></div></div>
+ <div class="card" style="margin-top:6px"><div class="ch">✨ Then it does this</div><div class="r"><div class="ic">🔗</div><div class="hp" style="color:var(--tx);font-size:17px">maps.google.com/… → opens in Organic Maps</div></div></div>
+</div></div></div>
+
+<h2>Already at 8–9 (light touch only)</h2>
+<p class="why"><b>Dialpad:</b> keys and Call button are already big. Bump the letters under the numbers to 16sp and make the "Matching contacts" rows 21sp to match Recents. <b>In-call (active / conference):</b> keep it, but put the button labels (Mute, Speaker…) at 16sp and fill the button while it's on (muted = gradient + "Muted"). <b>All apps / Folders:</b> good, they just need the 2dp borders and lifted cards. <b>Letter grid:</b> already excellent, leave it.</p>
+</body></html>
