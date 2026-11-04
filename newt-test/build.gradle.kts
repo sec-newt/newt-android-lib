@@ -48,6 +48,7 @@ dependencies {
 
     // The library's own gallery test (screenshots of every shared component).
     testImplementation(libs.junit)
+    testImplementation(libs.androidx.material.icons.core)
     testImplementation(libs.androidx.test.junit)
     testImplementation(libs.robolectric)
     debugImplementation(libs.androidx.ui.test.manifest)

@@ -22,6 +22,15 @@ import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import io.github.secnewt.ui.CardTitle
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.Icons
+import io.github.secnewt.ui.NewtValueRow
+import io.github.secnewt.ui.NewtSwitchRow
+import io.github.secnewt.ui.NewtSettingsCard
+import io.github.secnewt.ui.NewtRuleHeading
+import io.github.secnewt.ui.NewtReadingText
+import io.github.secnewt.ui.NewtLockedRow
+import io.github.secnewt.ui.NewtInfo
 import io.github.secnewt.ui.NewtFonts
 import io.github.secnewt.ui.NewtLook
 import io.github.secnewt.ui.NewtLookTheme
@@ -132,4 +141,34 @@ class GalleryTest {
 
     @Test
     fun galleryLargeText() = composeRule.newtScreenshot("gallery-200pct", dark = true, fontScale = 2f) { Gallery() }
+    /** The settings pieces (UI refresh), in reading text. */
+    @Composable
+    private fun SettingsGallery(transparent: Boolean = false) = NewtReadingText {
+        Surface(color = if (transparent) androidx.compose.ui.graphics.Color.Transparent else MaterialTheme.colorScheme.background) {
+            Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                NewtRuleHeading("Today")
+                NewtSettingsCard("Ring on silent", icon = Icons.Filled.Notifications) {
+                    NewtSwitchRow("Favorites", checked = true, onCheckedChange = {}, hint = "At alarm volume")
+                    NewtSwitchRow("Quiet hours", checked = false, onCheckedChange = {}, hint = "Only those two ring, at night")
+                    NewtValueRow("Unknown callers", "Balanced", onClick = {})
+                    NewtLockedRow("After 911", "Always", "Every call rings for an hour after you call 911.")
+                    NewtInfo(details = "Numbers that look made up or copy yours.")
+                }
+            }
+        }
+    }
+
+    @Test
+    fun settingsGalleryDark() = composeRule.newtScreenshot("settings-gallery-dark", dark = true, minTextSp = 16f) { SettingsGallery() }
+
+    @Test
+    fun settingsGalleryLight() = composeRule.newtScreenshot("settings-gallery-light", dark = false, minTextSp = 16f) { SettingsGallery() }
+
+    @Test
+    fun settingsGallery200pct() = composeRule.newtScreenshot("settings-gallery-200pct", dark = true, fontScale = 2f) { SettingsGallery() }
+
+    @Test
+    fun settingsGalleryTerminalDark() = composeRule.newtScreenshot("settings-gallery-terminal-dark", dark = true, minTextSp = 16f) {
+        NewtLookTheme(NewtLook.TERMINAL, host = "gallery") { SettingsGallery(transparent = true) }
+    }
 }
