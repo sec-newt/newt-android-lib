@@ -1,6 +1,6 @@
 # Newt UI refresh: design
 
-Date: 2026-11-04 · Status: mockups approved by the owner, design awaiting approval
+Date: 2026-11-04 · Status: approved for the library pieces (1.4.0) and a Newt Phone test build (Settings + Recents); everything else open until the phone test
 
 Mockups (open in a browser): [round 1, main screens](2026-11-04-ui-refresh/round1-screens.html),
 [round 2, menus and the rest](2026-11-04-ui-refresh/round2-menus.html). Each one shows the
