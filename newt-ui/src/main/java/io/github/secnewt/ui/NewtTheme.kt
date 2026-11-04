@@ -12,6 +12,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontVariation
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 import io.github.secnewt.ui.R
 
 /**
@@ -129,6 +130,38 @@ val NewtTypography = Typography(
     labelMedium = Base.labelMedium.scaled(NewtFonts.Body),
     labelSmall = Base.labelSmall.scaled(NewtFonts.Body),
 )
+
+/** Reading text with a 16sp floor (the UI refresh): screens opt in with [NewtReadingText]. */
+val NewtReadingTypography = Typography(
+    displayLarge = NewtTypography.displayLarge,
+    displayMedium = NewtTypography.displayMedium,
+    displaySmall = NewtTypography.displaySmall,
+    headlineLarge = NewtTypography.headlineLarge,
+    headlineMedium = NewtTypography.headlineMedium,
+    headlineSmall = NewtTypography.headlineSmall,
+    titleLarge = Base.titleLarge.reading(21),
+    titleMedium = Base.titleMedium.reading(19),
+    titleSmall = Base.titleSmall.reading(17),
+    bodyLarge = Base.bodyLarge.reading(17),
+    bodyMedium = Base.bodyMedium.reading(16),
+    bodySmall = Base.bodySmall.reading(16),
+    labelLarge = Base.labelLarge.reading(16),
+    labelMedium = Base.labelMedium.reading(16),
+    labelSmall = Base.labelSmall.reading(16),
+)
+
+private fun TextStyle.reading(sp: Int) =
+    copy(fontFamily = NewtFonts.Body, fontSize = sp.sp, lineHeight = (sp * 1.3f).sp)
+
+/**
+ * Shows [content] with [NewtReadingTypography] (in JetBrains Mono in the terminal look). Put it
+ * inside [NewtTheme] and [NewtLookTheme].
+ */
+@Composable
+fun NewtReadingText(content: @Composable () -> Unit) {
+    val typography = if (terminalLook()) terminalTypography(NewtReadingTypography) else NewtReadingTypography
+    MaterialTheme(colorScheme = MaterialTheme.colorScheme, typography = typography, content = content)
+}
 
 @Composable
 fun NewtTheme(
