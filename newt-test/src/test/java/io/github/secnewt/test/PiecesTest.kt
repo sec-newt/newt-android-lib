@@ -28,6 +28,14 @@ import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import io.github.secnewt.ui.NewtInfo
+import org.junit.Assert.assertThrows
+import androidx.compose.ui.test.assertIsNotSelected
+import androidx.compose.ui.test.assertIsSelected
+import io.github.secnewt.ui.NewtTone
+import io.github.secnewt.ui.NewtStateChip
+import io.github.secnewt.ui.NewtSummary
+import io.github.secnewt.ui.NewtPickList
+import io.github.secnewt.ui.NewtChoice
 import io.github.secnewt.ui.NewtLockedRow
 import io.github.secnewt.ui.NewtReadingText
 import io.github.secnewt.ui.NewtSwitchRow
@@ -134,5 +142,69 @@ class PiecesTest {
         }
         assertFalse("Unknown callers overflows", overflows("Unknown callers"))
         assertFalse("Quiet in Do Not Disturb overflows", overflows("Quiet in Do Not Disturb"))
+    }
+    private enum class Level { Off, Balanced, Strict }
+
+    @Test
+    fun choiceSelectsAndReadsAsRadio() {
+        var picked: Level? = null
+        show { NewtChoice(Level.entries, Level.Balanced, label = { it.name }, onSelect = { picked = it }) }
+        for (level in Level.entries) {
+            val node = composeRule.onNodeWithText(level.name)
+                .assert(SemanticsMatcher.expectValue(SemanticsProperties.Role, Role.RadioButton))
+            if (level == Level.Balanced) node.assertIsSelected() else node.assertIsNotSelected()
+        }
+        composeRule.onNodeWithText("Strict").performClick()
+        assertEquals(Level.Strict, picked)
+    }
+
+    @Test
+    fun choiceNeverSplitsALabelAt200pct() {
+        show(fontScale = 2f) {
+            Box(Modifier.width(340.dp)) { NewtChoice(Level.entries, Level.Balanced, label = { it.name }, onSelect = {}) }
+        }
+        for (level in Level.entries) assertFalse("${level.name} overflows", overflows(level.name))
+    }
+
+    @Test
+    fun choiceWithNothingSelected() {
+        show { NewtChoice(Level.entries, null, label = { it.name }, onSelect = {}) }
+        for (level in Level.entries) composeRule.onNodeWithText(level.name).assertIsNotSelected()
+    }
+
+    @Test
+    fun choiceRejectsFourOptions() {
+        assertThrows(IllegalArgumentException::class.java) {
+            show { NewtChoice(listOf(1, 2, 3, 4), 1, label = { "$it" }, onSelect = {}) }
+        }
+    }
+
+    @Test
+    fun pickListShowsOnlySelectedHint() {
+        show {
+            NewtPickList(
+                options = Level.entries,
+                selected = Level.Balanced,
+                label = { it.name },
+                hint = { "${it.name} hint" },
+                onSelect = {},
+            )
+        }
+        composeRule.onNodeWithText("Balanced hint", useUnmergedTree = true).assertExists()
+        composeRule.onNodeWithText("Off hint", useUnmergedTree = true).assertDoesNotExist()
+        composeRule.onNodeWithText("Strict hint", useUnmergedTree = true).assertDoesNotExist()
+    }
+
+    @Test
+    fun summaryReadsAsOneSentence() {
+        show { NewtSummary("Right now", "Favorites ring on silent.") }
+        composeRule.onNodeWithContentDescription("Right now. Favorites ring on silent.").assertExists()
+    }
+
+    @Test
+    fun chipNeverEllipsizes() {
+        // Half a phone row: the narrowest place a chip sits. It has to wrap between words, not split one.
+        show(fontScale = 2f) { Box(Modifier.width(200.dp)) { NewtStateChip("Would silence", NewtTone.Danger) } }
+        assertFalse(overflows("Would silence"))
     }
 }
