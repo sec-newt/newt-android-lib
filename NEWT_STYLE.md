@@ -24,6 +24,14 @@ text, high contrast, big touch targets, and words next to icons.
   Atkinson Hyperlegible for names and text, JetBrains Mono for numbers.
   Body and title text is 8% smaller than Material's defaults; the phone's own
   font size still applies on top.
+- **The UI refresh (2026-11, being rolled out):** redesigned screens use
+  `NewtReadingText` (no text under 16sp; names and row titles 19–21sp) and the
+  shared pieces: settings cards whose rows read title → one line of help →
+  state as a word (ON/OFF inside the switch, or a chip), big two- or three-way
+  choices, a "Right now" summary on big settings screens, an edge stripe plus
+  words for anything color means, worded buttons 58–64dp tall, and dangerous
+  actions behind ⋯. The "8% smaller" rule above goes away in library 2.0.0.
+  Design: `docs/superpowers/specs/2026-11-04-ui-refresh-design.md`.
 - **Icon:** the solid blue-to-purple newt on near-black, with a colored badge
   for each app (Phone: green handset). Same newt in every app; only the badge
   changes. No glow on the small icon.

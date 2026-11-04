@@ -8,8 +8,8 @@ screenshot and accessibility tests run before anything merges.
 
 | Module | What's in it | How an app adds it |
 |---|---|---|
-| `newt-ui` | `NewtTheme`, `NewtFonts` (the three bundled fonts), headers, section headings, card titles, `neonOutline()`, `neonFieldColors()` | `implementation("io.github.secnewt:newt-ui:1.0.0")` |
-| `newt-test` | `newtScreenshot(...)`: a screenshot in the Newt theme plus accessibility checks, for screen tests | `testImplementation("io.github.secnewt:newt-test:1.0.0")` |
+| `newt-ui` | `NewtTheme`, `NewtFonts` (the three bundled fonts), headers, section headings, card titles, `neonOutline()`, `neonFieldColors()`; the UI refresh pieces (1.4.0): `NewtReadingText`, `NewtSettingsCard` and its rows (`NewtSwitchRow` with ON/OFF, `NewtValueRow`, `NewtLockedRow`), `NewtChoice`, `NewtPickList`, `NewtStateChip`, `NewtSummary`, `newtStripe`, `NewtButton`/`NewtPrimaryButton`, `NewtActionGrid`, `NewtSteps`, `NewtInfo`, `NewtRuleHeading` | `implementation("io.github.secnewt:newt-ui:1.0.0")` |
+| `newt-test` | `newtScreenshot(...)`: a screenshot in the Newt theme plus accessibility checks, for screen tests; `minTextSp = 16f` (or `assertTextAtLeast(16f)`) fails any text under 16sp | `testImplementation("io.github.secnewt:newt-test:1.0.0")` |
 
 The rules behind the look are in [NEWT_STYLE.md](NEWT_STYLE.md). Every shared piece is
 pictured in light, dark and 200% text by `GalleryTest`; CI uploads the pictures as the
