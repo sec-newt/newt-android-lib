@@ -23,6 +23,14 @@ import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import io.github.secnewt.ui.CardTitle
+import androidx.compose.foundation.layout.fillMaxWidth
+import io.github.secnewt.ui.NewtStepState
+import io.github.secnewt.ui.NewtStep
+import io.github.secnewt.ui.NewtSteps
+import io.github.secnewt.ui.NewtAction
+import io.github.secnewt.ui.NewtActionGrid
+import io.github.secnewt.ui.NewtPrimaryButton
+import io.github.secnewt.ui.NewtButton
 import io.github.secnewt.ui.newtStripe
 import io.github.secnewt.ui.NewtTone
 import io.github.secnewt.ui.NewtStateChip
@@ -221,5 +229,52 @@ class GalleryTest {
     @Test
     fun choicesGalleryTerminalDark() = composeRule.newtScreenshot("choices-gallery-terminal-dark", dark = true, minTextSp = 16f) {
         NewtLookTheme(NewtLook.TERMINAL, host = "gallery") { ChoicesGallery(transparent = true) }
+    }
+    /** Worded buttons, the action grid and first-run steps (UI refresh), in reading text. */
+    @Composable
+    private fun ActionsGallery(transparent: Boolean = false) = NewtReadingText {
+        Surface(color = if (transparent) androidx.compose.ui.graphics.Color.Transparent else MaterialTheme.colorScheme.background) {
+            Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                NewtPrimaryButton("Directions", onClick = {}, tone = NewtTone.Good, large = true, modifier = Modifier.fillMaxWidth())
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    NewtPrimaryButton("Voice on", onClick = {}, modifier = Modifier.weight(1f))
+                    NewtPrimaryButton("End", onClick = {}, tone = NewtTone.Danger, modifier = Modifier.weight(1f))
+                }
+                NewtButton("Test the voice", onClick = {}, modifier = Modifier.fillMaxWidth())
+                NewtActionGrid(
+                    listOf(
+                        NewtAction("Unfavorite", {}, hint = "Stays in All apps"),
+                        NewtAction("To folder", {}),
+                        NewtAction("Move up", {}),
+                        NewtAction("Move down", {}),
+                        NewtAction("Search words", {}, hint = "Like \"bank\""),
+                        NewtAction("Hide", {}, hint = "Search still finds it"),
+                    ),
+                )
+                NewtSteps(
+                    listOf(
+                        NewtStep("Install a map app", NewtStepState.Done, hint = "Organic Maps found"),
+                        NewtStep("Turn on link opening", NewtStepState.Now, hint = "One time.", action = {
+                            NewtPrimaryButton("Turn on", onClick = {}, modifier = Modifier.fillMaxWidth())
+                        }),
+                        NewtStep("Try it", NewtStepState.ToDo, hint = "Tap any maps link"),
+                    ),
+                )
+            }
+        }
+    }
+
+    @Test
+    fun actionsGalleryDark() = composeRule.newtScreenshot("actions-gallery-dark", dark = true, minTextSp = 16f) { ActionsGallery() }
+
+    @Test
+    fun actionsGalleryLight() = composeRule.newtScreenshot("actions-gallery-light", dark = false, minTextSp = 16f) { ActionsGallery() }
+
+    @Test
+    fun actionsGallery200pct() = composeRule.newtScreenshot("actions-gallery-200pct", dark = true, fontScale = 2f) { ActionsGallery() }
+
+    @Test
+    fun actionsGalleryTerminalDark() = composeRule.newtScreenshot("actions-gallery-terminal-dark", dark = true, minTextSp = 16f) {
+        NewtLookTheme(NewtLook.TERMINAL, host = "gallery") { ActionsGallery(transparent = true) }
     }
 }

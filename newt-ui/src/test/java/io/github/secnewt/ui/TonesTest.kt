@@ -36,7 +36,7 @@ class TonesTest {
     fun textOnGradientIsSevenToOne() {
         for ((scheme, dark) in schemes) {
             val on = onGradient(dark)
-            for (stop in listOf(scheme.primary, scheme.secondary)) {
+            for (stop in listOf(scheme.primary, scheme.secondary, toneColor(NewtTone.Good, scheme, dark))) {
                 val ratio = contrastRatio(on, stop)
                 assertTrue("text on gradient (${if (dark) "dark" else "light"}) is $ratio:1", ratio >= 7f)
             }

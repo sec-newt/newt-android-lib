@@ -28,6 +28,14 @@ import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import io.github.secnewt.ui.NewtInfo
+import androidx.compose.ui.test.assertHeightIsAtLeast
+import io.github.secnewt.ui.NewtStepState
+import io.github.secnewt.ui.NewtStep
+import io.github.secnewt.ui.NewtSteps
+import io.github.secnewt.ui.NewtAction
+import io.github.secnewt.ui.NewtActionGrid
+import io.github.secnewt.ui.NewtPrimaryButton
+import io.github.secnewt.ui.NewtButton
 import org.junit.Assert.assertThrows
 import androidx.compose.ui.test.assertIsNotSelected
 import androidx.compose.ui.test.assertIsSelected
@@ -206,5 +214,54 @@ class PiecesTest {
         // Half a phone row: the narrowest place a chip sits. It has to wrap between words, not split one.
         show(fontScale = 2f) { Box(Modifier.width(200.dp)) { NewtStateChip("Would silence", NewtTone.Danger) } }
         assertFalse(overflows("Would silence"))
+    }
+    @Test
+    fun buttonsAreTallEnough() {
+        show {
+            Column {
+                NewtButton("Test the voice", onClick = {})
+                NewtPrimaryButton("Directions", onClick = {}, tone = NewtTone.Good, large = true)
+            }
+        }
+        composeRule.onNodeWithText("Test the voice").assertHeightIsAtLeast(58.dp)
+        composeRule.onNodeWithText("Directions").assertHeightIsAtLeast(64.dp)
+    }
+
+    @Test
+    fun actionGridTilesAreButtons() {
+        var tapped = ""
+        show {
+            NewtActionGrid(
+                listOf(
+                    NewtAction("Move up", onClick = { tapped = "up" }),
+                    NewtAction("Hide", onClick = { tapped = "hide" }, hint = "Search still finds it"),
+                ),
+            )
+        }
+        composeRule.onNode(hasText("Hide") and hasText("Search still finds it"))
+            .assert(SemanticsMatcher.expectValue(SemanticsProperties.Role, Role.Button))
+            .performClick()
+        assertEquals("hide", tapped)
+    }
+
+    private val steps = listOf(
+        NewtStep("Install a map app", NewtStepState.Done),
+        NewtStep("Turn on link opening", NewtStepState.Now, action = { NewtPrimaryButton("Turn on", onClick = {}) }),
+        NewtStep("Try it", NewtStepState.ToDo, action = { NewtPrimaryButton("Never shown", onClick = {}) }),
+    )
+
+    @Test
+    fun stepsReadTheirState() {
+        show { NewtSteps(steps) }
+        composeRule.onNodeWithContentDescription("Step 1 of 3, Install a map app, done").assertExists()
+        composeRule.onNodeWithContentDescription("Step 2 of 3, Turn on link opening, current").assertExists()
+        composeRule.onNodeWithContentDescription("Step 3 of 3, Try it, not yet").assertExists()
+    }
+
+    @Test
+    fun onlyCurrentStepShowsAction() {
+        show { NewtSteps(steps) }
+        composeRule.onNodeWithText("Turn on").assertIsDisplayed()
+        composeRule.onNodeWithText("Never shown").assertDoesNotExist()
     }
 }
