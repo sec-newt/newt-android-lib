@@ -2,6 +2,7 @@ package io.github.secnewt.test
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.padding
@@ -22,6 +23,29 @@ import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import io.github.secnewt.ui.CardTitle
+import androidx.compose.foundation.layout.fillMaxWidth
+import io.github.secnewt.ui.NewtStepState
+import io.github.secnewt.ui.NewtStep
+import io.github.secnewt.ui.NewtSteps
+import io.github.secnewt.ui.NewtAction
+import io.github.secnewt.ui.NewtActionGrid
+import io.github.secnewt.ui.NewtPrimaryButton
+import io.github.secnewt.ui.NewtButton
+import io.github.secnewt.ui.newtStripe
+import io.github.secnewt.ui.NewtTone
+import io.github.secnewt.ui.NewtStateChip
+import io.github.secnewt.ui.NewtSummary
+import io.github.secnewt.ui.NewtPickList
+import io.github.secnewt.ui.NewtChoice
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.Icons
+import io.github.secnewt.ui.NewtValueRow
+import io.github.secnewt.ui.NewtSwitchRow
+import io.github.secnewt.ui.NewtSettingsCard
+import io.github.secnewt.ui.NewtRuleHeading
+import io.github.secnewt.ui.NewtReadingText
+import io.github.secnewt.ui.NewtLockedRow
+import io.github.secnewt.ui.NewtInfo
 import io.github.secnewt.ui.NewtFonts
 import io.github.secnewt.ui.NewtLook
 import io.github.secnewt.ui.NewtLookTheme
@@ -132,4 +156,125 @@ class GalleryTest {
 
     @Test
     fun galleryLargeText() = composeRule.newtScreenshot("gallery-200pct", dark = true, fontScale = 2f) { Gallery() }
+    /** The settings pieces (UI refresh), in reading text. */
+    @Composable
+    private fun SettingsGallery(transparent: Boolean = false) = NewtReadingText {
+        Surface(color = if (transparent) androidx.compose.ui.graphics.Color.Transparent else MaterialTheme.colorScheme.background) {
+            Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                NewtRuleHeading("Today")
+                NewtSettingsCard("Ring on silent", icon = Icons.Filled.Notifications) {
+                    NewtSwitchRow("Favorites", checked = true, onCheckedChange = {}, hint = "At alarm volume")
+                    NewtSwitchRow("Quiet hours", checked = false, onCheckedChange = {}, hint = "Only those two ring, at night")
+                    NewtValueRow("Unknown callers", "Balanced", onClick = {})
+                    NewtLockedRow("After 911", "Always", "Every call rings for an hour after you call 911.")
+                    NewtInfo(details = "Numbers that look made up or copy yours.")
+                }
+            }
+        }
+    }
+
+    @Test
+    fun settingsGalleryDark() = composeRule.newtScreenshot("settings-gallery-dark", dark = true, minTextSp = 16f) { SettingsGallery() }
+
+    @Test
+    fun settingsGalleryLight() = composeRule.newtScreenshot("settings-gallery-light", dark = false, minTextSp = 16f) { SettingsGallery() }
+
+    @Test
+    fun settingsGallery200pct() = composeRule.newtScreenshot("settings-gallery-200pct", dark = true, fontScale = 2f) { SettingsGallery() }
+
+    @Test
+    fun settingsGalleryTerminalDark() = composeRule.newtScreenshot("settings-gallery-terminal-dark", dark = true, minTextSp = 16f) {
+        NewtLookTheme(NewtLook.TERMINAL, host = "gallery") { SettingsGallery(transparent = true) }
+    }
+    /** Choices, chips, the summary box and the edge stripe (UI refresh), in reading text. */
+    @Composable
+    private fun ChoicesGallery(transparent: Boolean = false) = NewtReadingText {
+        Surface(color = if (transparent) androidx.compose.ui.graphics.Color.Transparent else MaterialTheme.colorScheme.background) {
+            Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                NewtSummary("Right now", "Favorites ring on silent. Spam is watched, not blocked.")
+                NewtChoice(listOf(true, false), true, label = { if (it) "Watch" else "Block" }, onSelect = {})
+                NewtChoice(
+                    listOf("Off", "Balanced", "Strict"), "Balanced", label = { it }, onSelect = {},
+                    explanation = "Suspicious numbers are silenced. Your contacts always ring.",
+                )
+                NewtPickList(
+                    listOf("Quiet note", "Like a text", "Don't notify"), "Quiet note", label = { it },
+                    hint = { if (it == "Quiet note") "\"Becca loved your message\"" else null }, onSelect = {},
+                )
+                FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    NewtStateChip("Ring", NewtTone.Good)
+                    NewtStateChip("Silence", NewtTone.Info)
+                    NewtStateChip("Block", NewtTone.Danger)
+                    NewtStateChip("2", NewtTone.Neutral)
+                }
+                Text(
+                    "Likely spam · missed 5:00 PM",
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.newtStripe(MaterialTheme.colorScheme.error).padding(12.dp),
+                )
+            }
+        }
+    }
+
+    @Test
+    fun choicesGalleryDark() = composeRule.newtScreenshot("choices-gallery-dark", dark = true, minTextSp = 16f) { ChoicesGallery() }
+
+    @Test
+    fun choicesGalleryLight() = composeRule.newtScreenshot("choices-gallery-light", dark = false, minTextSp = 16f) { ChoicesGallery() }
+
+    @Test
+    fun choicesGallery200pct() = composeRule.newtScreenshot("choices-gallery-200pct", dark = true, fontScale = 2f) { ChoicesGallery() }
+
+    @Test
+    fun choicesGalleryTerminalDark() = composeRule.newtScreenshot("choices-gallery-terminal-dark", dark = true, minTextSp = 16f) {
+        NewtLookTheme(NewtLook.TERMINAL, host = "gallery") { ChoicesGallery(transparent = true) }
+    }
+    /** Worded buttons, the action grid and first-run steps (UI refresh), in reading text. */
+    @Composable
+    private fun ActionsGallery(transparent: Boolean = false) = NewtReadingText {
+        Surface(color = if (transparent) androidx.compose.ui.graphics.Color.Transparent else MaterialTheme.colorScheme.background) {
+            Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                NewtPrimaryButton("Directions", onClick = {}, tone = NewtTone.Good, large = true, modifier = Modifier.fillMaxWidth())
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    NewtPrimaryButton("Voice on", onClick = {}, modifier = Modifier.weight(1f))
+                    NewtPrimaryButton("End", onClick = {}, tone = NewtTone.Danger, modifier = Modifier.weight(1f))
+                }
+                NewtButton("Test the voice", onClick = {}, modifier = Modifier.fillMaxWidth())
+                NewtActionGrid(
+                    listOf(
+                        NewtAction("Unfavorite", {}, hint = "Stays in All apps"),
+                        NewtAction("To folder", {}),
+                        NewtAction("Move up", {}),
+                        NewtAction("Move down", {}),
+                        NewtAction("Search words", {}, hint = "Like \"bank\""),
+                        NewtAction("Hide", {}, hint = "Search still finds it"),
+                    ),
+                )
+                NewtSteps(
+                    listOf(
+                        NewtStep("Install a map app", NewtStepState.Done, hint = "Organic Maps found"),
+                        NewtStep("Turn on link opening", NewtStepState.Now, hint = "One time.", action = {
+                            NewtPrimaryButton("Turn on", onClick = {}, modifier = Modifier.fillMaxWidth())
+                        }),
+                        NewtStep("Try it", NewtStepState.ToDo, hint = "Tap any maps link"),
+                    ),
+                )
+            }
+        }
+    }
+
+    @Test
+    fun actionsGalleryDark() = composeRule.newtScreenshot("actions-gallery-dark", dark = true, minTextSp = 16f) { ActionsGallery() }
+
+    @Test
+    fun actionsGalleryLight() = composeRule.newtScreenshot("actions-gallery-light", dark = false, minTextSp = 16f) { ActionsGallery() }
+
+    @Test
+    fun actionsGallery200pct() = composeRule.newtScreenshot("actions-gallery-200pct", dark = true, fontScale = 2f) { ActionsGallery() }
+
+    @Test
+    fun actionsGalleryTerminalDark() = composeRule.newtScreenshot("actions-gallery-terminal-dark", dark = true, minTextSp = 16f) {
+        NewtLookTheme(NewtLook.TERMINAL, host = "gallery") { ActionsGallery(transparent = true) }
+    }
 }

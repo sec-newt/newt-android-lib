@@ -166,9 +166,16 @@ object NewtTerminal {
     fun prompt(): Color = if (MaterialTheme.colorScheme.background.lightness() < 0.5f) Color(0xFF9ECE6A) else Color(0xFF2D5A0A)
 }
 
-/** Every style in JetBrains Mono, which runs wider, so a touch smaller to fit the same lines. */
-private fun terminalTypography(base: Typography): Typography {
-    fun TextStyle.mono() = copy(fontFamily = NewtFonts.Mono, fontSize = fontSize * 0.94f, lineHeight = lineHeight * 0.94f)
+/**
+ * Every style in JetBrains Mono, which runs wider, so a touch smaller to fit the same lines.
+ * Styles of 16sp or more never drop below 16sp (the reading floor).
+ */
+internal fun terminalTypography(base: Typography): Typography {
+    fun TextStyle.mono(): TextStyle {
+        val floor = if (fontSize.value >= 16f) 16f / fontSize.value else 0f
+        val scale = maxOf(0.94f, floor)
+        return copy(fontFamily = NewtFonts.Mono, fontSize = fontSize * scale, lineHeight = lineHeight * scale)
+    }
     return Typography(
         displayLarge = base.displayLarge.mono(), displayMedium = base.displayMedium.mono(), displaySmall = base.displaySmall.mono(),
         headlineLarge = base.headlineLarge.mono(), headlineMedium = base.headlineMedium.mono(), headlineSmall = base.headlineSmall.mono(),

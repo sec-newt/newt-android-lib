@@ -1,0 +1,160 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Chakra+Petch:wght@600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050608;--s1:#0E1118;--s2:#161B26;--tx:#EEF1FA;--mu:#B8C0DA;--bl:#85ABF8;--pu:#BB9AF7;--cy:#7DCFFF;--gr:#9ECE6A;--rd:#FF7A93;--grad:linear-gradient(135deg,#85ABF8,#BB9AF7)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Atkinson Hyperlegible',sans-serif;padding:4px 0}
+h2{font:700 22px 'Chakra Petch';margin:28px 0 6px}
+.why{font-size:15px;line-height:1.45;margin-bottom:12px;opacity:.9}
+.why b{color:var(--primary)}
+.row{display:flex;gap:16px;justify-content:center;align-items:flex-start}
+.col{display:flex;flex-direction:column;align-items:center;gap:6px}
+.tag{font:700 13px 'JetBrains Mono';letter-spacing:.08em;padding:3px 10px;border-radius:99px;border:1px solid var(--border)}
+.tag.new{background:var(--grad);color:#0A0B10;border:0}
+.before{width:340px;border-radius:22px;border:2px solid #333;display:block}
+.ph{width:340px;height:720px;background:var(--bg);color:var(--tx);border-radius:22px;border:2px solid #333;overflow:hidden;display:flex;flex-direction:column;position:relative}
+.ttl{font:700 30px 'Chakra Petch';padding:18px 18px 8px;display:flex;justify-content:space-between;align-items:center}
+.gear{width:48px;height:48px;border-radius:14px;border:2px solid var(--bl);display:grid;place-items:center;font-size:22px}
+.mono{font-family:'JetBrains Mono',monospace}
+.chip{white-space:nowrap;margin:4px 16px 8px;padding:12px 14px;border-radius:16px;background:var(--s1);border:2px solid #2A3350;display:flex;gap:10px;align-items:center;font-size:17px;font-weight:700}
+.chip span{color:var(--mu);font-weight:400}
+.day{font:700 15px 'JetBrains Mono';color:var(--cy);letter-spacing:.1em;padding:14px 18px 6px;display:flex;align-items:center;gap:10px}
+.day:after{content:"";flex:1;height:2px;background:#1E2538}
+.it{display:flex;align-items:center;gap:12px;padding:10px 16px;min-height:76px}
+.it.alert{background:linear-gradient(90deg,rgba(255,122,147,.13),transparent 70%);border-left:6px solid var(--rd);padding-left:10px}
+.av{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font:700 22px 'Atkinson Hyperlegible';color:#0A0B10;flex:none}
+.nm{font-size:21px;font-weight:700;line-height:1.15}
+.sub{font-size:16px;color:var(--mu);margin-top:3px}
+.sub b{color:var(--tx)}
+.red{color:var(--rd)!important}
+.call{margin-left:auto;width:58px;height:58px;border-radius:18px;border:2.5px solid var(--gr);display:grid;place-items:center;font-size:24px;flex:none;color:var(--gr)}
+.nav{margin-top:auto;display:flex;background:var(--s1);border-top:2px solid #1E2538;padding:10px 6px 14px}
+.nav div{flex:1;text-align:center;font-size:16px;font-weight:700;color:var(--mu);display:flex;flex-direction:column;align-items:center;gap:4px}
+.nav i{font-style:normal;font-size:22px;width:64px;height:36px;border-radius:99px;display:grid;place-items:center}
+.nav .on{color:var(--tx)} .nav .on i{background:var(--grad);color:#0A0B10}
+/* home */
+.clock{font:700 80px 'JetBrains Mono';letter-spacing:-4px;padding:16px 18px 0;line-height:1}
+.dl{font-size:22px;padding:6px 18px 0;display:flex;gap:14px;align-items:center}
+.next{margin:12px 16px;padding:12px 16px;border-radius:18px;background:var(--s1);border:2px solid var(--bl)}
+.next .k{font:700 14px 'JetBrains Mono';color:var(--cy);letter-spacing:.1em}
+.next .v{font-size:22px;font-weight:700;margin-top:4px}
+.next .w{font-size:16px;color:var(--mu);margin-top:2px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 16px}
+.tile{background:var(--s1);border:2px solid #2A3350;border-radius:18px;min-height:74px;padding:10px 12px;display:flex;flex-direction:column;justify-content:space-between}
+.tile .lt{width:34px;height:34px;border-radius:10px;background:var(--grad);color:#0A0B10;display:grid;place-items:center;font:700 18px 'JetBrains Mono'}
+.tile .tn{font-size:20px;font-weight:700}
+.badge{display:inline-block;background:var(--rd);color:#0A0B10;font-weight:700;font-size:14px;padding:2px 8px;border-radius:99px;margin-left:6px;vertical-align:middle}
+.btm{margin-top:auto;padding:12px 16px 16px;display:flex;flex-direction:column;gap:10px}
+.two{display:flex;gap:10px}
+.ob{flex:1;height:60px;border-radius:16px;border:2.5px solid var(--bl);display:grid;place-items:center;font-size:19px;font-weight:700}
+.search{height:62px;border-radius:99px;border:2.5px solid var(--pu);display:flex;align-items:center;gap:12px;padding:0 20px;font-size:19px;color:var(--mu)}
+/* chat */
+.top{display:flex;align-items:center;gap:12px;padding:14px 14px 10px;border-bottom:2px solid #1E2538}
+.back{width:48px;height:48px;border-radius:14px;border:2px solid var(--bl);display:grid;place-items:center;font-size:22px}
+.msgs{padding:8px 14px;display:flex;flex-direction:column;gap:12px;flex:1}
+.from{display:flex;gap:8px;align-items:flex-end}
+.from .av{width:36px;height:36px;font-size:16px}
+.bub{background:var(--s2);border-radius:18px 18px 18px 6px;padding:10px 14px;max-width:240px;border-left:5px solid}
+.bub .who{font-weight:700;font-size:15px;margin-bottom:2px}
+.bub .t{font-size:19px;line-height:1.3}
+.bub .tm{font:500 14px 'JetBrains Mono';color:var(--mu);margin-top:4px}
+.mine{align-self:flex-end;background:var(--grad);color:#0A0B10;border-radius:18px 18px 6px 18px;padding:10px 14px;max-width:240px}
+.mine .t{font-size:19px;font-weight:700}.mine .tm{font:500 14px 'JetBrains Mono';margin-top:4px;color:#1A1C2A}
+.react{display:inline-flex;gap:6px;margin-top:6px}
+.react span{background:var(--s1);border:2px solid #2A3350;border-radius:99px;padding:2px 10px;font-size:16px;color:var(--tx)}
+.comp{display:flex;gap:10px;padding:12px 14px 16px;border-top:2px solid #1E2538}
+.comp .in{flex:1;height:58px;border-radius:18px;border:2.5px solid var(--pu);display:flex;align-items:center;padding:0 16px;font-size:19px;color:var(--mu)}
+.comp .snd{width:58px;height:58px;border-radius:18px;background:var(--grad);display:grid;place-items:center;color:#0A0B10;font-size:24px;font-weight:700}
+/* incoming */
+.inc{flex:1;display:flex;flex-direction:column;align-items:center;padding:30px 20px 0;text-align:center}
+.inc .k{font:700 16px 'JetBrains Mono';color:var(--cy);letter-spacing:.15em}
+.inc .big{width:150px;height:150px;font-size:72px;margin:24px 0 18px;box-shadow:0 0 0 5px var(--bg),0 0 0 9px var(--gr)}
+.inc .n{font:700 46px 'Atkinson Hyperlegible';line-height:1}
+.inc .num{font:500 22px 'JetBrains Mono';color:var(--mu);margin-top:10px}
+.ctx{margin-top:18px;display:flex;flex-direction:column;gap:8px;width:100%}
+.ctx div{background:var(--s1);border:2px solid #2A3350;border-radius:14px;padding:10px 14px;font-size:17px;text-align:left}
+.acts{padding:0 16px 20px;display:flex;flex-direction:column;gap:12px}
+.ans{height:84px;border-radius:24px;background:var(--gr);color:#0A0B10;display:flex;align-items:center;justify-content:center;gap:12px;font-size:28px;font-weight:700}
+.dec{height:72px;border-radius:24px;border:3px solid var(--rd);color:var(--rd);display:flex;align-items:center;justify-content:center;gap:12px;font-size:24px;font-weight:700}
+.sm{display:flex;gap:10px}.sm div{flex:1;height:56px;border-radius:16px;border:2px solid var(--bl);display:grid;place-items:center;font-size:17px;font-weight:700}
+.rules{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+.rule{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px}
+.rule b{display:block;font:700 16px 'Chakra Petch';margin-bottom:4px}
+.rule p{font-size:14px;line-height:1.4;opacity:.9}
+</style></head><body style="background:#111;color:#eee;max-width:728px;margin:auto;--card:#1a1a1a;--border:#444;--radius:10px;--primary:#85ABF8">
+
+<h2>The 6 rules behind every mockup</h2>
+<div class="rules">
+<div class="rule"><b>1 · No text under 16</b><p>Kill the "8% smaller than Material" rule. Secondary lines (times, "Missed", sender) go 11→16sp. Names 21sp.</p></div>
+<div class="rule"><b>2 · One hero per screen</b><p>The biggest thing is the thing you came for: the caller, the clock, the newest message. Everything else steps down.</p></div>
+<div class="rule"><b>3 · Surfaces, not just outlines</b><p>Thin 1dp outlines on black vanish at low vision. Use a lifted surface (#0E1118) + 2–2.5dp borders so groups read as blocks.</p></div>
+<div class="rule"><b>4 · Never color alone</b><p>Spam/missed get a thick red edge stripe + icon + word. Senders get their color as a stripe <i>and</i> their name.</p></div>
+<div class="rule"><b>5 · Fill the dead space</b><p>Incoming call, Maps, Reader leave half the screen empty. Spend it on bigger targets and useful context.</p></div>
+<div class="rule"><b>6 · Thumb zone = action zone</b><p>Primary actions live in the bottom third, 60–84dp tall, with words. Status goes up top.</p></div>
+</div>
+
+<h2>A · Phone → Recents</h2>
+<p class="why">Status card shrinks to <b>one line</b> (it's a setting, not news). Names jump to 21sp, details to 16sp. Spam row gets a <b>red edge stripe</b> so it's spotted without reading. Call buttons become green rounded squares — bigger and clearly "call", not decoration.</p>
+<div class="row">
+<div class="col"><span class="tag">NOW</span><img class="before" src="before/newt-phone__recents_dark.png"></div>
+<div class="col"><span class="tag new">PROPOSED</span>
+<div class="ph">
+ <div class="ttl">Recents<div class="gear">⚙</div></div>
+ <div class="chip">🛡 Spam watch <span>·</span> 🔊 Announce on <span style="margin-left:auto">›</span></div>
+ <div class="day">TODAY</div>
+ <div class="it alert"><div class="av" style="background:#C0C8E0">👤</div><div><div class="nm red">(555) 019‑7731</div><div class="sub red">⚠ <b class="red">Likely spam</b> · missed 5:00 PM</div></div><div class="call">📞</div></div>
+ <div class="it"><div class="av" style="background:var(--gr)">M</div><div><div class="nm">Mom</div><div class="sub">↙ <b>2 calls</b> · 4:00 PM</div></div><div class="call">📞</div></div>
+ <div class="day">YESTERDAY</div>
+ <div class="it"><div class="av" style="background:var(--cy)">A</div><div><div class="nm">Alex Rivera</div><div class="sub">↗ You called · 1 min</div></div><div class="call">📞</div></div>
+ <div class="it alert"><div class="av" style="background:var(--cy)">H</div><div><div class="nm red">Hidden number</div><div class="sub red">↙ <b class="red">Missed</b> · 12:00 PM</div></div><div class="call">📞</div></div>
+ <div class="nav"><div><i>★</i>Favorites</div><div class="on"><i>📞</i>Recents</div><div><i>👤</i>Contacts</div></div>
+</div></div></div>
+
+<h2>B · Phone → Incoming call</h2>
+<p class="why">Today the bottom half is empty and Answer/Decline sit side by side (easy to hit the wrong one). Proposed: <b>Answer is the biggest thing on the screen</b>, Decline is separate and outlined, and the empty space shows <b>who this is</b> — last call, whether they're a favorite. Quick "Text back" / "Silence" for when you can't talk.</p>
+<div class="row">
+<div class="col"><span class="tag">NOW</span><img class="before" src="before/newt-phone__incall_incoming_contact_dark.png"></div>
+<div class="col"><span class="tag new">PROPOSED</span>
+<div class="ph">
+ <div class="inc"><div class="k">INCOMING CALL</div><div class="av big" style="background:var(--gr)">M</div><div class="n">Mom</div><div class="num">(555) 019‑7731</div>
+  <div class="ctx"><div>★ Favorite · mobile</div><div>↙ Last talked yesterday, 4 min</div></div></div>
+ <div class="acts"><div class="sm"><div>💬 Text back</div><div>🔕 Silence</div></div><div class="dec">✕ Decline</div><div class="ans">📞 Answer</div></div>
+</div></div></div>
+
+<h2>C · Home → launcher</h2>
+<p class="why">Clock stays the hero. Weather moves <b>onto the date line</b> so it's always there. The "Next" event becomes a real card with <b>"in 45 min"</b> (no mental math). Favorites become <b>big 2‑column tiles</b> — twice the tap area, and "2 missed" is a red pill you can't miss.</p>
+<div class="row">
+<div class="col"><span class="tag">NOW</span><img class="before" src="before/newt-home__clean_weather_dark.png"></div>
+<div class="col"><span class="tag new">PROPOSED</span>
+<div class="ph">
+ <div class="clock">13:22</div>
+ <div class="dl"><span>Fri, Oct 9</span><span>☀ <b>82°</b> <span style="color:#FF9E64">↑90°</span></span></div>
+ <div class="next"><div class="k">NEXT · IN 45 MIN</div><div class="v">15:00 Dentist</div><div class="w">+2 more today</div></div>
+ <div class="grid">
+  <div class="tile"><div class="lt">P</div><div class="tn">Phone<span class="badge">2 missed</span></div></div>
+  <div class="tile"><div class="lt">M</div><div class="tn">Messages</div></div>
+  <div class="tile"><div class="lt">S</div><div class="tn">Signal</div></div>
+  <div class="tile"><div class="lt">C</div><div class="tn">Camera</div></div>
+  <div class="tile" style="grid-column:span 2;flex-direction:row;align-items:center;gap:12px"><div class="lt">V</div><div class="tn">Vanadium</div></div>
+ </div>
+ <div class="btm"><div class="two"><div class="ob">Folders</div><div class="ob">All apps</div></div><div class="search">🔍 Search, or type help<span style="margin-left:auto">🎙</span></div></div>
+</div></div></div>
+
+<h2>D · Messages → group chat</h2>
+<p class="why">Message text 13→19sp. Each sender gets a <b>color stripe + avatar + bold name</b> (not just a tiny colored label). Your own messages are solid gradient so "me vs. them" reads from across the room. Reactions become readable pills. Composer is 58dp tall.</p>
+<div class="row">
+<div class="col"><span class="tag">NOW</span><img class="before" src="before/newt-messages__chat-group-dark.png"></div>
+<div class="col"><span class="tag new">PROPOSED</span>
+<div class="ph">
+ <div class="top"><div class="back">←</div><div style="font:700 26px 'Chakra Petch'">Family</div><div class="mono" style="margin-left:auto;color:var(--mu);font-size:15px">4 people</div></div>
+ <div class="msgs">
+  <div class="mine"><div class="t">I can do the brisket</div><div class="tm">9:00 AM</div></div>
+  <div style="align-self:flex-end" class="react"><span>❤ 2</span><span>😂 1</span></div>
+  <div class="from"><div class="av" style="background:var(--cy)">S</div><div class="bub" style="border-color:var(--cy)"><div class="who" style="color:var(--cy)">Sam</div><div class="t">I'll bring the chairs</div><div class="tm">10:00 AM</div></div></div>
+  <div class="from"><div class="av" style="background:#E0AF68">B</div><div class="bub" style="border-color:#E0AF68"><div class="who" style="color:#E0AF68">Becca</div><div class="t">Thank you both!</div><div class="tm">11:00 AM</div></div></div>
+  <div class="from"><div class="av" style="background:var(--gr)">M</div><div class="bub" style="border-color:var(--gr)"><div class="who" style="color:var(--gr)">Mom</div><div class="t">📎 bulletin.pdf<br>Here's Sunday's bulletin</div><div class="tm">11:00 AM</div></div></div>
+ </div>
+ <div class="comp"><div class="in">Message</div><div class="snd">➤</div></div>
+</div></div></div>
+
+</body></html>
