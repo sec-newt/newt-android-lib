@@ -325,4 +325,29 @@ class PiecesTest {
         show { NewtLookTheme(NewtLook.TERMINAL) { NewtPromptLine("weather", "forecast --7d", "Forecast") } }
         composeRule.assertTextAtLeast(16f)
     }
+
+    @Test
+    fun piecesColorTheirOwnTextWithoutASurface() {
+        // Apps put these on sheets that aren't a Surface, so no content color is provided.
+        composeRule.setContent {
+            NewtTheme(darkTheme = true) {
+                Column {
+                    NewtSettingsCard("Card") { NewtValueRow("Row title", "Value", onClick = {}) }
+                    NewtPickList(listOf("One", "Two", "Three", "Four"), selected = "One", label = { it }, hint = { null }, onSelect = {})
+                    NewtSummary("Right now", "A sentence.")
+                    NewtActionGrid(listOf(NewtAction("Tile", onClick = {})))
+                    NewtSteps(listOf(NewtStep("A step", NewtStepState.Now)))
+                    NewtInfo("Details")
+                }
+            }
+        }
+        composeRule.onNodeWithText("What's this?").performClick()
+        val black = mutableListOf<String>()
+        for (node in composeRule.onAllNodes(SemanticsMatcher.keyIsDefined(SemanticsActions.GetTextLayoutResult), useUnmergedTree = true).fetchSemanticsNodes()) {
+            val results = mutableListOf<TextLayoutResult>()
+            node.config[SemanticsActions.GetTextLayoutResult].action?.invoke(results)
+            results.forEach { if (it.layoutInput.style.color == androidx.compose.ui.graphics.Color.Black) black += it.layoutInput.text.text }
+        }
+        assertEquals(emptyList<String>(), black)
+    }
 }
