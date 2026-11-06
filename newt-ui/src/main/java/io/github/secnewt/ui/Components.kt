@@ -63,16 +63,9 @@ fun CardTitle(text: String) {
     )
 }
 
+/** A section's label: "TODAY ————" in capitals with a rule after it (see [NewtRuleHeading]). */
 @Composable
-fun SectionLabel(text: String, modifier: Modifier = Modifier) {
-    Text(
-        text = text,
-        style = MaterialTheme.typography.titleMedium,
-        fontWeight = FontWeight.SemiBold,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
-        modifier = modifier.semantics { heading() },
-    )
-}
+fun SectionLabel(text: String, modifier: Modifier = Modifier) = NewtRuleHeading(text, modifier)
 
 /** Large heading that starts a group of settings. */
 @Composable
@@ -93,7 +86,7 @@ fun SectionHeading(text: String, modifier: Modifier = Modifier) {
  * go, red danger) keep their own color instead.
  */
 @Composable
-fun neonOutline(width: Dp = 1.5.dp): BorderStroke = BorderStroke(
+fun neonOutline(width: Dp = 2.dp): BorderStroke = BorderStroke(
     width,
     Brush.linearGradient(listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.secondary)),
 )

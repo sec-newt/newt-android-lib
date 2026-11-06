@@ -28,6 +28,9 @@ import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import io.github.secnewt.ui.NewtInfo
+import androidx.compose.ui.test.onAllNodesWithText
+import io.github.secnewt.ui.NewtPromptLine
+import io.github.secnewt.ui.SectionLabel
 import io.github.secnewt.ui.NewtFonts
 import io.github.secnewt.ui.NewtLook
 import io.github.secnewt.ui.NewtLookTheme
@@ -278,5 +281,48 @@ class PiecesTest {
         val results = mutableListOf<TextLayoutResult>()
         node.config[SemanticsActions.GetTextLayoutResult].action?.invoke(results)
         assertEquals(NewtFonts.Mono, results.single().layoutInput.style.fontFamily)
+    }
+
+    @Test
+    fun cardHeadingShrinksWithTheTerminalLook() {
+        composeRule.setContent {
+            NewtTheme(darkTheme = true) {
+                NewtLookTheme(NewtLook.TERMINAL) { NewtSettingsCard("Ring on silent") {} }
+            }
+        }
+        val node = composeRule.onNodeWithText("Ring on silent", useUnmergedTree = true).fetchSemanticsNode()
+        val results = mutableListOf<TextLayoutResult>()
+        node.config[SemanticsActions.GetTextLayoutResult].action?.invoke(results)
+        assertEquals(19f * 0.94f, results.single().layoutInput.style.fontSize.value, 0.01f)
+    }
+
+    @Test
+    fun sectionLabelIsARuleHeading() {
+        show { SectionLabel("Today") }
+        composeRule.onNodeWithContentDescription("Today").assert(SemanticsMatcher.keyIsDefined(SemanticsProperties.Heading))
+        composeRule.onNodeWithText("TODAY", useUnmergedTree = true).assertExists()
+        composeRule.assertTextAtLeast(16f)
+    }
+
+    @Test
+    fun infoStateSaysCollapsedThenExpanded() {
+        show { NewtInfo(details = "Longer help") }
+        composeRule.onNodeWithText("What's this?").assert(SemanticsMatcher.expectValue(SemanticsProperties.StateDescription, "Collapsed"))
+        composeRule.onNodeWithText("What's this?").performClick()
+        composeRule.onNodeWithText("What's this?").assert(SemanticsMatcher.expectValue(SemanticsProperties.StateDescription, "Expanded"))
+        composeRule.onNodeWithText("Longer help").assertExists()
+    }
+
+    @Test
+    fun stepNumberIsNotItsOwnStop() {
+        show { NewtSteps(steps) }
+        composeRule.onAllNodesWithText("2").assertCountEquals(0)
+        composeRule.onAllNodesWithText("3").assertCountEquals(0)
+    }
+
+    @Test
+    fun promptLineIs16sp() {
+        show { NewtLookTheme(NewtLook.TERMINAL) { NewtPromptLine("weather", "forecast --7d", "Forecast") } }
+        composeRule.assertTextAtLeast(16f)
     }
 }
