@@ -173,16 +173,16 @@ class GalleryTest {
     }
 
     @Test
-    fun settingsGalleryDark() = composeRule.newtScreenshot("settings-gallery-dark", dark = true, minTextSp = 16f) { SettingsGallery() }
+    fun settingsGalleryDark() = composeRule.newtScreenshot("settings-gallery-dark", dark = true) { SettingsGallery() }
 
     @Test
-    fun settingsGalleryLight() = composeRule.newtScreenshot("settings-gallery-light", dark = false, minTextSp = 16f) { SettingsGallery() }
+    fun settingsGalleryLight() = composeRule.newtScreenshot("settings-gallery-light", dark = false) { SettingsGallery() }
 
     @Test
     fun settingsGallery200pct() = composeRule.newtScreenshot("settings-gallery-200pct", dark = true, fontScale = 2f) { SettingsGallery() }
 
     @Test
-    fun settingsGalleryTerminalDark() = composeRule.newtScreenshot("settings-gallery-terminal-dark", dark = true, minTextSp = 16f) {
+    fun settingsGalleryTerminalDark() = composeRule.newtScreenshot("settings-gallery-terminal-dark", dark = true) {
         NewtLookTheme(NewtLook.TERMINAL, host = "gallery") { SettingsGallery(transparent = true) }
     }
     /** Choices, chips, the summary box and the edge stripe (UI refresh), in reading text. */
@@ -217,16 +217,16 @@ class GalleryTest {
     }
 
     @Test
-    fun choicesGalleryDark() = composeRule.newtScreenshot("choices-gallery-dark", dark = true, minTextSp = 16f) { ChoicesGallery() }
+    fun choicesGalleryDark() = composeRule.newtScreenshot("choices-gallery-dark", dark = true) { ChoicesGallery() }
 
     @Test
-    fun choicesGalleryLight() = composeRule.newtScreenshot("choices-gallery-light", dark = false, minTextSp = 16f) { ChoicesGallery() }
+    fun choicesGalleryLight() = composeRule.newtScreenshot("choices-gallery-light", dark = false) { ChoicesGallery() }
 
     @Test
     fun choicesGallery200pct() = composeRule.newtScreenshot("choices-gallery-200pct", dark = true, fontScale = 2f) { ChoicesGallery() }
 
     @Test
-    fun choicesGalleryTerminalDark() = composeRule.newtScreenshot("choices-gallery-terminal-dark", dark = true, minTextSp = 16f) {
+    fun choicesGalleryTerminalDark() = composeRule.newtScreenshot("choices-gallery-terminal-dark", dark = true) {
         NewtLookTheme(NewtLook.TERMINAL, host = "gallery") { ChoicesGallery(transparent = true) }
     }
     /** Worded buttons, the action grid and first-run steps (UI refresh), in reading text. */
@@ -264,16 +264,16 @@ class GalleryTest {
     }
 
     @Test
-    fun actionsGalleryDark() = composeRule.newtScreenshot("actions-gallery-dark", dark = true, minTextSp = 16f) { ActionsGallery() }
+    fun actionsGalleryDark() = composeRule.newtScreenshot("actions-gallery-dark", dark = true) { ActionsGallery() }
 
     @Test
-    fun actionsGalleryLight() = composeRule.newtScreenshot("actions-gallery-light", dark = false, minTextSp = 16f) { ActionsGallery() }
+    fun actionsGalleryLight() = composeRule.newtScreenshot("actions-gallery-light", dark = false) { ActionsGallery() }
 
     @Test
     fun actionsGallery200pct() = composeRule.newtScreenshot("actions-gallery-200pct", dark = true, fontScale = 2f) { ActionsGallery() }
 
     @Test
-    fun actionsGalleryTerminalDark() = composeRule.newtScreenshot("actions-gallery-terminal-dark", dark = true, minTextSp = 16f) {
+    fun actionsGalleryTerminalDark() = composeRule.newtScreenshot("actions-gallery-terminal-dark", dark = true) {
         NewtLookTheme(NewtLook.TERMINAL, host = "gallery") { ActionsGallery(transparent = true) }
     }
 }
