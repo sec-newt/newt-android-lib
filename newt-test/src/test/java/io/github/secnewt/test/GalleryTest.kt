@@ -43,7 +43,6 @@ import io.github.secnewt.ui.NewtValueRow
 import io.github.secnewt.ui.NewtSwitchRow
 import io.github.secnewt.ui.NewtSettingsCard
 import io.github.secnewt.ui.NewtRuleHeading
-import io.github.secnewt.ui.NewtReadingText
 import io.github.secnewt.ui.NewtLockedRow
 import io.github.secnewt.ui.NewtInfo
 import io.github.secnewt.ui.NewtFonts
@@ -158,7 +157,7 @@ class GalleryTest {
     fun galleryLargeText() = composeRule.newtScreenshot("gallery-200pct", dark = true, fontScale = 2f) { Gallery() }
     /** The settings pieces (UI refresh), in reading text. */
     @Composable
-    private fun SettingsGallery(transparent: Boolean = false) = NewtReadingText {
+    private fun SettingsGallery(transparent: Boolean = false) = Column {
         Surface(color = if (transparent) androidx.compose.ui.graphics.Color.Transparent else MaterialTheme.colorScheme.background) {
             Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 NewtRuleHeading("Today")
@@ -174,21 +173,21 @@ class GalleryTest {
     }
 
     @Test
-    fun settingsGalleryDark() = composeRule.newtScreenshot("settings-gallery-dark", dark = true, minTextSp = 16f) { SettingsGallery() }
+    fun settingsGalleryDark() = composeRule.newtScreenshot("settings-gallery-dark", dark = true) { SettingsGallery() }
 
     @Test
-    fun settingsGalleryLight() = composeRule.newtScreenshot("settings-gallery-light", dark = false, minTextSp = 16f) { SettingsGallery() }
+    fun settingsGalleryLight() = composeRule.newtScreenshot("settings-gallery-light", dark = false) { SettingsGallery() }
 
     @Test
     fun settingsGallery200pct() = composeRule.newtScreenshot("settings-gallery-200pct", dark = true, fontScale = 2f) { SettingsGallery() }
 
     @Test
-    fun settingsGalleryTerminalDark() = composeRule.newtScreenshot("settings-gallery-terminal-dark", dark = true, minTextSp = 16f) {
+    fun settingsGalleryTerminalDark() = composeRule.newtScreenshot("settings-gallery-terminal-dark", dark = true) {
         NewtLookTheme(NewtLook.TERMINAL, host = "gallery") { SettingsGallery(transparent = true) }
     }
     /** Choices, chips, the summary box and the edge stripe (UI refresh), in reading text. */
     @Composable
-    private fun ChoicesGallery(transparent: Boolean = false) = NewtReadingText {
+    private fun ChoicesGallery(transparent: Boolean = false) = Column {
         Surface(color = if (transparent) androidx.compose.ui.graphics.Color.Transparent else MaterialTheme.colorScheme.background) {
             Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 NewtSummary("Right now", "Favorites ring on silent. Spam is watched, not blocked.")
@@ -218,21 +217,21 @@ class GalleryTest {
     }
 
     @Test
-    fun choicesGalleryDark() = composeRule.newtScreenshot("choices-gallery-dark", dark = true, minTextSp = 16f) { ChoicesGallery() }
+    fun choicesGalleryDark() = composeRule.newtScreenshot("choices-gallery-dark", dark = true) { ChoicesGallery() }
 
     @Test
-    fun choicesGalleryLight() = composeRule.newtScreenshot("choices-gallery-light", dark = false, minTextSp = 16f) { ChoicesGallery() }
+    fun choicesGalleryLight() = composeRule.newtScreenshot("choices-gallery-light", dark = false) { ChoicesGallery() }
 
     @Test
     fun choicesGallery200pct() = composeRule.newtScreenshot("choices-gallery-200pct", dark = true, fontScale = 2f) { ChoicesGallery() }
 
     @Test
-    fun choicesGalleryTerminalDark() = composeRule.newtScreenshot("choices-gallery-terminal-dark", dark = true, minTextSp = 16f) {
+    fun choicesGalleryTerminalDark() = composeRule.newtScreenshot("choices-gallery-terminal-dark", dark = true) {
         NewtLookTheme(NewtLook.TERMINAL, host = "gallery") { ChoicesGallery(transparent = true) }
     }
     /** Worded buttons, the action grid and first-run steps (UI refresh), in reading text. */
     @Composable
-    private fun ActionsGallery(transparent: Boolean = false) = NewtReadingText {
+    private fun ActionsGallery(transparent: Boolean = false) = Column {
         Surface(color = if (transparent) androidx.compose.ui.graphics.Color.Transparent else MaterialTheme.colorScheme.background) {
             Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 NewtPrimaryButton("Directions", onClick = {}, tone = NewtTone.Good, large = true, modifier = Modifier.fillMaxWidth())
@@ -265,16 +264,16 @@ class GalleryTest {
     }
 
     @Test
-    fun actionsGalleryDark() = composeRule.newtScreenshot("actions-gallery-dark", dark = true, minTextSp = 16f) { ActionsGallery() }
+    fun actionsGalleryDark() = composeRule.newtScreenshot("actions-gallery-dark", dark = true) { ActionsGallery() }
 
     @Test
-    fun actionsGalleryLight() = composeRule.newtScreenshot("actions-gallery-light", dark = false, minTextSp = 16f) { ActionsGallery() }
+    fun actionsGalleryLight() = composeRule.newtScreenshot("actions-gallery-light", dark = false) { ActionsGallery() }
 
     @Test
     fun actionsGallery200pct() = composeRule.newtScreenshot("actions-gallery-200pct", dark = true, fontScale = 2f) { ActionsGallery() }
 
     @Test
-    fun actionsGalleryTerminalDark() = composeRule.newtScreenshot("actions-gallery-terminal-dark", dark = true, minTextSp = 16f) {
+    fun actionsGalleryTerminalDark() = composeRule.newtScreenshot("actions-gallery-terminal-dark", dark = true) {
         NewtLookTheme(NewtLook.TERMINAL, host = "gallery") { ActionsGallery(transparent = true) }
     }
 }

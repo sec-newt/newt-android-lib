@@ -2,6 +2,8 @@ package io.github.secnewt.test
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Text
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -59,5 +61,25 @@ class TextSizeCheckTest {
     @Test
     fun skippedAtBigFontScale() = composeRule.newtScreenshot("t-200", dark = true, fontScale = 2f, minTextSp = 16f) {
         Text("tiny but scaled", fontSize = 12.sp)
+    }
+
+    @Test
+    fun defaultChecks16sp() {
+        val error = assertThrows(AssertionError::class.java) {
+            composeRule.newtScreenshot("t-default", dark = true) { Text("tiny", fontSize = 12.sp) }
+        }
+        assertTrue(error.message!!.contains("tiny"))
+    }
+
+    @Test
+    fun nullTurnsItOff() = composeRule.newtScreenshot("t-off", dark = true, minTextSp = null) {
+        Text("tiny", fontSize = 12.sp)
+    }
+
+    @Test
+    fun seesHiddenText() {
+        composeRule.setContent { Text("hidden", fontSize = 12.sp, modifier = Modifier.clearAndSetSemantics { }) }
+        val error = assertThrows(AssertionError::class.java) { composeRule.assertTextAtLeast(16f) }
+        assertTrue(error.message!!.contains("hidden"))
     }
 }

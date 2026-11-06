@@ -135,8 +135,8 @@ fun NewtSettingsCard(
                 text = title,
                 // Like CardTitle: JetBrains Mono in the terminal look.
                 fontFamily = if (terminalLook()) NewtFonts.Mono else NewtFonts.Display,
+                style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
-                fontSize = 19.sp,
                 color = MaterialTheme.colorScheme.tertiary,
                 modifier = Modifier.semantics { heading() },
             )
@@ -286,7 +286,7 @@ fun NewtInfo(details: String, modifier: Modifier = Modifier, label: String = "Wh
             modifier = Modifier
                 .heightIn(min = 48.dp)
                 .clickable(role = Role.Button) { open = !open }
-                .semantics { stateDescription = if (open) "Open" else "Closed" },
+                .semantics { stateDescription = if (open) "Expanded" else "Collapsed" },
         ) {
             Icon(Icons.Filled.Info, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(22.dp))
             Text(label, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.primary)

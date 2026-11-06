@@ -8,6 +8,10 @@ import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.text.TextLayoutResult
+import androidx.compose.ui.layout.LayoutInfo
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.Density
 import com.github.takahirom.roborazzi.ExperimentalRoborazziApi
@@ -42,7 +46,7 @@ fun ComposeContentTestRule.newtScreenshot(
     dark: Boolean,
     fontScale: Float = 1f,
     theme: @Composable (dark: Boolean, content: @Composable () -> Unit) -> Unit = { d, c -> NewtTheme(darkTheme = d, content = c) },
-    minTextSp: Float? = null,
+    minTextSp: Float? = 16f,
     content: @Composable () -> Unit,
 ) {
     setContent {
@@ -63,10 +67,22 @@ fun ComposeContentTestRule.newtScreenshot(
 
 /**
  * Fails if any text on screen is smaller than [minSp] (counting styled parts of a text too),
- * listing every offender. Text drawn as a picture, or hidden from screen readers, isn't seen.
+ * listing every offender. It also sees text hidden from screen readers. Text drawn as a
+ * picture isn't seen.
  */
 fun ComposeContentTestRule.assertTextAtLeast(minSp: Float) {
+    waitForIdle()
     val problems = mutableListOf<String>()
+    fun check(text: String, sizes: List<TextUnit>) {
+        for (size in sizes) {
+            when {
+                size == TextUnit.Unspecified -> Unit
+                size.isEm -> problems += "\"$text\" uses em; use sp"
+                size.value < minSp - 0.01f -> problems += "\"$text\" is ${size.value}sp, needs ${minSp}sp"
+            }
+        }
+    }
+    // Text that screen readers can reach reports its laid-out style.
     val nodes = onAllNodes(SemanticsMatcher.keyIsDefined(SemanticsActions.GetTextLayoutResult), useUnmergedTree = true)
         .fetchSemanticsNodes()
     for (node in nodes) {
@@ -74,16 +90,47 @@ fun ComposeContentTestRule.assertTextAtLeast(minSp: Float) {
         node.config[SemanticsActions.GetTextLayoutResult].action?.invoke(results)
         for (result in results) {
             val input = result.layoutInput
-            val text = input.text.text
-            val sizes = listOf(input.style.fontSize) + input.text.spanStyles.map { it.item.fontSize }
-            for (size in sizes) {
-                when {
-                    size == TextUnit.Unspecified -> Unit
-                    size.isEm -> problems += "\"$text\" uses em; use sp"
-                    size.value < minSp - 0.01f -> problems += "\"$text\" is ${size.value}sp, needs ${minSp}sp"
-                }
-            }
+            check(input.text.text, listOf(input.style.fontSize) + input.text.spanStyles.map { it.item.fontSize })
+        }
+    }
+    // Text hidden from screen readers (clearAndSetSemantics) has no semantics node, so walk the
+    // layout tree too and read each text's style from its modifier.
+    val root = onRoot(useUnmergedTree = true).fetchSemanticsNode().layoutInfo
+    for (info in layoutTree(root)) {
+        for (modifier in info.getModifierInfo().map { it.modifier }) {
+            val found = textOf(modifier) ?: continue
+            check(found.first, found.second)
         }
     }
     if (problems.isNotEmpty()) throw AssertionError("Text too small:\n" + problems.distinct().joinToString("\n"))
+}
+
+// Compose keeps a layout node's children internal; its JVM getter name is stable across releases.
+private fun layoutTree(start: LayoutInfo): List<LayoutInfo> {
+    var top = start
+    while (top.parentInfo != null) top = top.parentInfo!!
+    val out = mutableListOf<LayoutInfo>()
+    val stack = ArrayDeque(listOf(top))
+    while (stack.isNotEmpty()) {
+        val info = stack.removeLast()
+        out += info
+        val getter = info.javaClass.methods.firstOrNull { it.name.startsWith("getChildren") && it.parameterCount == 0 && List::class.java.isAssignableFrom(it.returnType) }
+            ?: error("Can't walk the layout tree: Compose renamed LayoutNode.children")
+        @Suppress("UNCHECKED_CAST")
+        (getter.invoke(info) as List<LayoutInfo>).forEach { stack.addLast(it) }
+    }
+    return out
+}
+
+/** The text and font sizes of a Text's modifier element (Compose's text elements are internal). */
+private fun textOf(modifier: Modifier): Pair<String, List<TextUnit>>? {
+    val name = modifier.javaClass.simpleName
+    if (!name.startsWith("Text") || !name.endsWith("Element")) return null
+    fun field(n: String) = modifier.javaClass.declaredFields.firstOrNull { it.name == n }?.apply { isAccessible = true }?.get(modifier)
+    val style = field("style") as? TextStyle ?: return null
+    return when (val text = field("text")) {
+        is AnnotatedString -> text.text to (listOf(style.fontSize) + text.spanStyles.map { it.item.fontSize })
+        is String -> text to listOf(style.fontSize)
+        else -> null
+    }
 }

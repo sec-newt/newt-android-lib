@@ -202,7 +202,7 @@ fun NewtPromptLine(host: String, command: String, title: String?, modifier: Modi
             append(command)
         },
         fontFamily = NewtFonts.Mono,
-        fontSize = 15.sp,
+        fontSize = 16.sp,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
         modifier = modifier
             .padding(top = 8.dp)

@@ -28,6 +28,9 @@ import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import io.github.secnewt.ui.NewtInfo
+import androidx.compose.ui.test.onAllNodesWithText
+import io.github.secnewt.ui.NewtPromptLine
+import io.github.secnewt.ui.SectionLabel
 import io.github.secnewt.ui.NewtFonts
 import io.github.secnewt.ui.NewtLook
 import io.github.secnewt.ui.NewtLookTheme
@@ -49,7 +52,6 @@ import io.github.secnewt.ui.NewtSummary
 import io.github.secnewt.ui.NewtPickList
 import io.github.secnewt.ui.NewtChoice
 import io.github.secnewt.ui.NewtLockedRow
-import io.github.secnewt.ui.NewtReadingText
 import io.github.secnewt.ui.NewtSwitchRow
 import io.github.secnewt.ui.NewtTheme
 import io.github.secnewt.ui.NewtValueRow
@@ -74,7 +76,7 @@ class PiecesTest {
     private fun show(fontScale: Float = 1f, content: @Composable () -> Unit) = composeRule.setContent {
         val density = LocalDensity.current
         CompositionLocalProvider(LocalDensity provides Density(density.density, fontScale)) {
-            NewtTheme(darkTheme = true) { NewtReadingText(content) }
+            NewtTheme(darkTheme = true, content = content)
         }
     }
 
@@ -272,12 +274,55 @@ class PiecesTest {
     fun cardHeadingUsesTerminalFontInTerminalLook() {
         composeRule.setContent {
             NewtTheme(darkTheme = true) {
-                NewtLookTheme(NewtLook.TERMINAL) { NewtReadingText { NewtSettingsCard("Ring on silent") {} } }
+                NewtLookTheme(NewtLook.TERMINAL) { NewtSettingsCard("Ring on silent") {} }
             }
         }
         val node = composeRule.onNodeWithText("Ring on silent", useUnmergedTree = true).fetchSemanticsNode()
         val results = mutableListOf<TextLayoutResult>()
         node.config[SemanticsActions.GetTextLayoutResult].action?.invoke(results)
         assertEquals(NewtFonts.Mono, results.single().layoutInput.style.fontFamily)
+    }
+
+    @Test
+    fun cardHeadingShrinksWithTheTerminalLook() {
+        composeRule.setContent {
+            NewtTheme(darkTheme = true) {
+                NewtLookTheme(NewtLook.TERMINAL) { NewtSettingsCard("Ring on silent") {} }
+            }
+        }
+        val node = composeRule.onNodeWithText("Ring on silent", useUnmergedTree = true).fetchSemanticsNode()
+        val results = mutableListOf<TextLayoutResult>()
+        node.config[SemanticsActions.GetTextLayoutResult].action?.invoke(results)
+        assertEquals(19f * 0.94f, results.single().layoutInput.style.fontSize.value, 0.01f)
+    }
+
+    @Test
+    fun sectionLabelIsARuleHeading() {
+        show { SectionLabel("Today") }
+        composeRule.onNodeWithContentDescription("Today").assert(SemanticsMatcher.keyIsDefined(SemanticsProperties.Heading))
+        composeRule.onNodeWithText("TODAY", useUnmergedTree = true).assertExists()
+        composeRule.assertTextAtLeast(16f)
+    }
+
+    @Test
+    fun infoStateSaysCollapsedThenExpanded() {
+        show { NewtInfo(details = "Longer help") }
+        composeRule.onNodeWithText("What's this?").assert(SemanticsMatcher.expectValue(SemanticsProperties.StateDescription, "Collapsed"))
+        composeRule.onNodeWithText("What's this?").performClick()
+        composeRule.onNodeWithText("What's this?").assert(SemanticsMatcher.expectValue(SemanticsProperties.StateDescription, "Expanded"))
+        composeRule.onNodeWithText("Longer help").assertExists()
+    }
+
+    @Test
+    fun stepNumberIsNotItsOwnStop() {
+        show { NewtSteps(steps) }
+        composeRule.onAllNodesWithText("2").assertCountEquals(0)
+        composeRule.onAllNodesWithText("3").assertCountEquals(0)
+    }
+
+    @Test
+    fun promptLineIs16sp() {
+        show { NewtLookTheme(NewtLook.TERMINAL) { NewtPromptLine("weather", "forecast --7d", "Forecast") } }
+        composeRule.assertTextAtLeast(16f)
     }
 }

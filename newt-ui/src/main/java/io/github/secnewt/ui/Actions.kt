@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
@@ -211,7 +212,10 @@ fun NewtSteps(steps: List<NewtStep>, modifier: Modifier = Modifier) {
 
 @Composable
 private fun StepCircle(number: Int, state: NewtStepState) {
-    val base = Modifier.size(36.dp).clip(CircleShape)
+    // The title already says "Step n of m", so the circle is decoration for screen readers. It
+    // grows with the phone's font size (up to 1.5×) so the number never crowds it.
+    val grow = LocalDensity.current.fontScale.coerceIn(1f, 1.5f)
+    val base = Modifier.size(36.dp * grow).clip(CircleShape).clearAndSetSemantics { }
     Box(
         contentAlignment = Alignment.Center,
         modifier = when (state) {
