@@ -138,7 +138,7 @@ fun NewtActionGrid(actions: List<NewtAction>, modifier: Modifier = Modifier) {
                             if (action.icon != null) {
                                 Icon(action.icon, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(22.dp))
                             }
-                            Text(action.label, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                            Text(action.label, fontSize = 18.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
                         }
                         if (action.hint != null) {
                             Text(action.hint, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -189,6 +189,7 @@ fun NewtSteps(steps: List<NewtStep>, modifier: Modifier = Modifier) {
                         step.title,
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier.clearAndSetSemantics {
                             contentDescription = "Step $number of ${steps.size}, ${step.title}, $state"
                         },

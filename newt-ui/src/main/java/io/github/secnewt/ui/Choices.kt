@@ -174,7 +174,7 @@ fun <T> NewtPickList(
                     if (chosen) Icon(Icons.Filled.Check, contentDescription = null, tint = onNewtGradient(), modifier = Modifier.size(20.dp))
                 }
                 Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                    Text(label(option), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                    Text(label(option), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
                     val h = hint(option)
                     if (chosen && h != null) {
                         Text(h, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -207,7 +207,7 @@ fun NewtSummary(label: String, text: String, modifier: Modifier = Modifier, tone
             fontSize = 16.sp,
             letterSpacing = 0.12.em,
         )
-        Text(text, style = MaterialTheme.typography.bodyLarge)
+        Text(text, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface)
     }
 }
 
