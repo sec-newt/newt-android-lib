@@ -44,25 +44,17 @@ class TonesTest {
     }
 
     @Test
-    fun readingTypographyFloor() {
-        for ((name, style) in NewtReadingTypography.all()) {
-            assertTrue("$name is ${style.fontSize}", style.fontSize.value >= 16f)
-        }
-        assertEquals(21.sp, NewtReadingTypography.titleLarge.fontSize)
-        assertEquals(17.sp, NewtReadingTypography.bodyLarge.fontSize)
-    }
-
-    @Test
-    fun terminalClampKeepsOldSizes() {
+    fun terminalShrinksBigStylesAndClampsTheRest() {
         val base = NewtTypography.all().toMap()
         for ((name, style) in terminalTypography(NewtTypography).all()) {
-            assertEquals(name, base.getValue(name).fontSize.value * 0.94f, style.fontSize.value, 0.001f)
+            val expected = maxOf(base.getValue(name).fontSize.value * 0.94f, minOf(16f, base.getValue(name).fontSize.value))
+            assertEquals(name, expected, style.fontSize.value, 0.001f)
         }
     }
 
     @Test
     fun terminalClampHoldsFloor() {
-        for ((name, style) in terminalTypography(NewtReadingTypography).all()) {
+        for ((name, style) in terminalTypography(NewtTypography).all()) {
             assertTrue("$name is ${style.fontSize}", style.fontSize.value >= 16f)
         }
     }

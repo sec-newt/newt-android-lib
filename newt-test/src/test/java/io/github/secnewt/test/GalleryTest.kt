@@ -43,7 +43,6 @@ import io.github.secnewt.ui.NewtValueRow
 import io.github.secnewt.ui.NewtSwitchRow
 import io.github.secnewt.ui.NewtSettingsCard
 import io.github.secnewt.ui.NewtRuleHeading
-import io.github.secnewt.ui.NewtReadingText
 import io.github.secnewt.ui.NewtLockedRow
 import io.github.secnewt.ui.NewtInfo
 import io.github.secnewt.ui.NewtFonts
@@ -158,7 +157,7 @@ class GalleryTest {
     fun galleryLargeText() = composeRule.newtScreenshot("gallery-200pct", dark = true, fontScale = 2f) { Gallery() }
     /** The settings pieces (UI refresh), in reading text. */
     @Composable
-    private fun SettingsGallery(transparent: Boolean = false) = NewtReadingText {
+    private fun SettingsGallery(transparent: Boolean = false) = Column {
         Surface(color = if (transparent) androidx.compose.ui.graphics.Color.Transparent else MaterialTheme.colorScheme.background) {
             Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 NewtRuleHeading("Today")
@@ -188,7 +187,7 @@ class GalleryTest {
     }
     /** Choices, chips, the summary box and the edge stripe (UI refresh), in reading text. */
     @Composable
-    private fun ChoicesGallery(transparent: Boolean = false) = NewtReadingText {
+    private fun ChoicesGallery(transparent: Boolean = false) = Column {
         Surface(color = if (transparent) androidx.compose.ui.graphics.Color.Transparent else MaterialTheme.colorScheme.background) {
             Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 NewtSummary("Right now", "Favorites ring on silent. Spam is watched, not blocked.")
@@ -232,7 +231,7 @@ class GalleryTest {
     }
     /** Worded buttons, the action grid and first-run steps (UI refresh), in reading text. */
     @Composable
-    private fun ActionsGallery(transparent: Boolean = false) = NewtReadingText {
+    private fun ActionsGallery(transparent: Boolean = false) = Column {
         Surface(color = if (transparent) androidx.compose.ui.graphics.Color.Transparent else MaterialTheme.colorScheme.background) {
             Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 NewtPrimaryButton("Directions", onClick = {}, tone = NewtTone.Good, large = true, modifier = Modifier.fillMaxWidth())

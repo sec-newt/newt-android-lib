@@ -49,7 +49,6 @@ import io.github.secnewt.ui.NewtSummary
 import io.github.secnewt.ui.NewtPickList
 import io.github.secnewt.ui.NewtChoice
 import io.github.secnewt.ui.NewtLockedRow
-import io.github.secnewt.ui.NewtReadingText
 import io.github.secnewt.ui.NewtSwitchRow
 import io.github.secnewt.ui.NewtTheme
 import io.github.secnewt.ui.NewtValueRow
@@ -74,7 +73,7 @@ class PiecesTest {
     private fun show(fontScale: Float = 1f, content: @Composable () -> Unit) = composeRule.setContent {
         val density = LocalDensity.current
         CompositionLocalProvider(LocalDensity provides Density(density.density, fontScale)) {
-            NewtTheme(darkTheme = true) { NewtReadingText(content) }
+            NewtTheme(darkTheme = true, content = content)
         }
     }
 
@@ -272,7 +271,7 @@ class PiecesTest {
     fun cardHeadingUsesTerminalFontInTerminalLook() {
         composeRule.setContent {
             NewtTheme(darkTheme = true) {
-                NewtLookTheme(NewtLook.TERMINAL) { NewtReadingText { NewtSettingsCard("Ring on silent") {} } }
+                NewtLookTheme(NewtLook.TERMINAL) { NewtSettingsCard("Ring on silent") {} }
             }
         }
         val node = composeRule.onNodeWithText("Ring on silent", useUnmergedTree = true).fetchSemanticsNode()

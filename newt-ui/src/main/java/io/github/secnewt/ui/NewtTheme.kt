@@ -106,13 +106,10 @@ val NewtDay = lightColorScheme(
 
 private val Base = Typography()
 
-/** Reading text a touch smaller than Material's defaults, on top of the phone's own font size. */
-private const val TEXT_SCALE = 0.92f
-
-private fun TextStyle.scaled(family: FontFamily) =
-    copy(fontFamily = family, fontSize = fontSize * TEXT_SCALE, lineHeight = lineHeight * TEXT_SCALE)
-
-/** Newt text styles: Chakra Petch for titles, Atkinson Hyperlegible for reading. */
+/**
+ * Newt text styles: Chakra Petch for big titles, Atkinson Hyperlegible for reading. No reading
+ * style is under 16sp (names and row titles 19–21sp); the phone's own font size applies on top.
+ */
 val NewtTypography = Typography(
     displayLarge = Base.displayLarge.copy(fontFamily = NewtFonts.Display),
     displayMedium = Base.displayMedium.copy(fontFamily = NewtFonts.Display),
@@ -120,25 +117,6 @@ val NewtTypography = Typography(
     headlineLarge = Base.headlineLarge.copy(fontFamily = NewtFonts.Display),
     headlineMedium = Base.headlineMedium.copy(fontFamily = NewtFonts.Display),
     headlineSmall = Base.headlineSmall.copy(fontFamily = NewtFonts.Display),
-    titleLarge = Base.titleLarge.scaled(NewtFonts.Body),
-    titleMedium = Base.titleMedium.scaled(NewtFonts.Body),
-    titleSmall = Base.titleSmall.scaled(NewtFonts.Body),
-    bodyLarge = Base.bodyLarge.scaled(NewtFonts.Body),
-    bodyMedium = Base.bodyMedium.scaled(NewtFonts.Body),
-    bodySmall = Base.bodySmall.scaled(NewtFonts.Body),
-    labelLarge = Base.labelLarge.scaled(NewtFonts.Body),
-    labelMedium = Base.labelMedium.scaled(NewtFonts.Body),
-    labelSmall = Base.labelSmall.scaled(NewtFonts.Body),
-)
-
-/** Reading text with a 16sp floor (the UI refresh): screens opt in with [NewtReadingText]. */
-val NewtReadingTypography = Typography(
-    displayLarge = NewtTypography.displayLarge,
-    displayMedium = NewtTypography.displayMedium,
-    displaySmall = NewtTypography.displaySmall,
-    headlineLarge = NewtTypography.headlineLarge,
-    headlineMedium = NewtTypography.headlineMedium,
-    headlineSmall = NewtTypography.headlineSmall,
     titleLarge = Base.titleLarge.reading(21),
     titleMedium = Base.titleMedium.reading(19),
     titleSmall = Base.titleSmall.reading(17),
@@ -150,16 +128,21 @@ val NewtReadingTypography = Typography(
     labelSmall = Base.labelSmall.reading(16),
 )
 
+/** The same as [NewtTypography] since 2.0.0. */
+@Deprecated("Same as NewtTypography since 2.0.0", ReplaceWith("NewtTypography"))
+val NewtReadingTypography: Typography get() = NewtTypography
+
 private fun TextStyle.reading(sp: Int) =
     copy(fontFamily = NewtFonts.Body, fontSize = sp.sp, lineHeight = (sp * 1.3f).sp)
 
 /**
- * Shows [content] with [NewtReadingTypography] (in JetBrains Mono in the terminal look). Put it
- * inside [NewtTheme] and [NewtLookTheme].
+ * Shows [content] with the 16sp-floor text styles (in JetBrains Mono in the terminal look). Not
+ * needed since 2.0.0: [NewtTheme] has the floor already.
  */
+@Deprecated("Not needed since 2.0.0: NewtTheme has the 16sp floor")
 @Composable
 fun NewtReadingText(content: @Composable () -> Unit) {
-    val typography = if (terminalLook()) terminalTypography(NewtReadingTypography) else NewtReadingTypography
+    val typography = if (terminalLook()) terminalTypography(NewtTypography) else NewtTypography
     MaterialTheme(colorScheme = MaterialTheme.colorScheme, typography = typography, content = content)
 }
 
