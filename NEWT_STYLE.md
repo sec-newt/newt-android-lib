@@ -22,15 +22,22 @@ text, high contrast, big touch targets, and words next to icons.
   with dark text on top.
 - **Fonts (bundled, never downloaded):** Chakra Petch for screen titles,
   Atkinson Hyperlegible for names and text, JetBrains Mono for numbers.
-  Body and title text is 8% smaller than Material's defaults; the phone's own
-  font size still applies on top.
-- **The UI refresh (2026-11, being rolled out):** redesigned screens use
-  `NewtReadingText` (no text under 16sp; names and row titles 19–21sp) and the
-  shared pieces: settings cards whose rows read title → one line of help →
-  state as a word (ON/OFF inside the switch, or a chip), big two- or three-way
-  choices, a "Right now" summary on big settings screens, an edge stripe plus
-  words for anything color means, worded buttons 58–64dp tall, and dangerous
-  actions behind ⋯. The "8% smaller" rule above goes away in library 2.0.0.
+  No reading text is under 16sp at the phone's default font size; names and row
+  titles are 19–21sp. The phone's own font size applies on top.
+- **The bar (every screen):**
+  1. No text under 16sp, including times, labels, hints and nav labels.
+  2. One hero per screen: the biggest thing is what you came for.
+  3. Groups sit on a lifted surface with a 2dp border (2.5dp for buttons and inputs).
+  4. Never color alone: a colored edge stripe always comes with an icon and a word.
+  5. Fill dead space with bigger targets or useful context.
+  6. Primary actions sit in the bottom third, 58–84dp tall, always with words. Status goes at the top.
+- **The bar (every menu):**
+  - M1: the state is a word right by the label (ON/OFF in the switch, or a chip).
+  - M2: one line of help at most; anything longer goes behind ⓘ.
+  - M3: cards of 3–5 rows, each card with an icon and a heading.
+  - M4: a "Right now" sentence at the top of big settings screens.
+  - M5: 2–3 options become big segmented buttons; longer lists become pick rows.
+  - M6: block, remove and delete live behind ⋯, never inline on every row.
   Design: `docs/superpowers/specs/2026-11-04-ui-refresh-design.md`.
 - **Icon:** the solid blue-to-purple newt on near-black, with a colored badge
   for each app (Phone: green handset). Same newt in every app; only the badge

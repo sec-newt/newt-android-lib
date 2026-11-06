@@ -8,8 +8,8 @@ screenshot and accessibility tests run before anything merges.
 
 | Module | What's in it | How an app adds it |
 |---|---|---|
-| `newt-ui` | `NewtTheme`, `NewtFonts` (the three bundled fonts), headers, section headings, card titles, `neonOutline()`, `neonFieldColors()`; the UI refresh pieces (1.4.0): `NewtReadingText`, `NewtSettingsCard` and its rows (`NewtSwitchRow` with ON/OFF, `NewtValueRow`, `NewtLockedRow`), `NewtChoice`, `NewtPickList`, `NewtStateChip`, `NewtSummary`, `newtStripe`, `NewtButton`/`NewtPrimaryButton`, `NewtActionGrid`, `NewtSteps`, `NewtInfo`, `NewtRuleHeading` | `implementation("io.github.secnewt:newt-ui:1.0.0")` |
-| `newt-test` | `newtScreenshot(...)`: a screenshot in the Newt theme plus accessibility checks, for screen tests; `minTextSp = 16f` (or `assertTextAtLeast(16f)`) fails any text under 16sp | `testImplementation("io.github.secnewt:newt-test:1.0.0")` |
+| `newt-ui` | `NewtTheme`, `NewtFonts` (the three bundled fonts), headers, section headings, card titles, `neonOutline()`, `neonFieldColors()`; the UI refresh pieces: `NewtSettingsCard` and its rows (`NewtSwitchRow` with ON/OFF, `NewtValueRow`, `NewtLockedRow`), `NewtChoice`, `NewtPickList`, `NewtStateChip`, `NewtSummary`, `newtStripe`, `NewtButton`/`NewtPrimaryButton`, `NewtActionGrid`, `NewtSteps`, `NewtInfo`, `NewtRuleHeading` | `implementation("io.github.secnewt:newt-ui:1.0.0")` |
+| `newt-test` | `newtScreenshot(...)`: a screenshot in the Newt theme plus accessibility checks, for screen tests. Since 2.0.0 it also fails any text under 16sp, including text hidden from screen readers (pass `minTextSp = null` to skip that for one test; `assertTextAtLeast(16f)` runs the check on its own). Text drawn as a picture isn't checked | `testImplementation("io.github.secnewt:newt-test:1.0.0")` |
 
 The rules behind the look are in [NEWT_STYLE.md](NEWT_STYLE.md). Every shared piece is
 pictured in light, dark and 200% text by `GalleryTest`; CI uploads the pictures as the
@@ -42,6 +42,14 @@ dependencyResolutionManagement {
 
 `exclusiveContent` means Newt packages come only from here, and nothing else is ever
 looked up here, so a look-alike package elsewhere can't sneak in.
+
+## Moving to 2.0.0
+
+2.0.0 makes the UI refresh's text sizes the default: no reading text under 16sp (titles 19–21sp), outlines 2dp, and `SectionLabel` drawn as the "TODAY ————" rule heading.
+
+1. Change `newtLib` to `2.0.0`. Text in every screen gets bigger with no code change.
+2. Run the tests. `newtScreenshot` now fails text under 16sp, and layouts may overflow at 200%. Fix each screen; while you do, a test can pass `minTextSp = null`.
+3. Remove `NewtReadingText` wrappers. They still work but are no longer needed.
 
 ## The shared app build
 
