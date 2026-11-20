@@ -1,0 +1,63 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+# CodeRabbit AI review. Tuned to be quiet: real bugs, security, privacy and
+# accessibility, not style nitpicks. Delete this file and remove the repo from
+# the CodeRabbit GitHub App to turn it off.
+language: en-US
+tone_instructions: "Be brief and direct. Skip praise. Only comment when something is wrong or risky."
+
+reviews:
+  profile: chill
+  request_changes_workflow: false
+  high_level_summary: true
+  collapse_walkthrough: true
+  review_details: false
+  changed_files_summary: false
+  sequence_diagrams: false
+  estimate_code_review_effort: false
+  related_issues: false
+  related_prs: false
+  suggested_labels: false
+  suggested_reviewers: false
+  in_progress_fortune: false
+  poem: false
+
+  auto_review:
+    enabled: true
+    drafts: false
+    ignore_title_keywords: ["WIP", "[skip review]"]
+    ignore_usernames: ["dependabot[bot]"]
+
+  path_filters:
+    - "!**/build/**"
+    - "!gradle/wrapper/**"
+
+  path_instructions:
+    - path: "**/*.kt"
+      instructions: |
+        This is the shared library (newt-ui theme and components, newt-test screenshot and accessibility checks, and the newt-app.yml reusable workflow) used by every Newt app. Focus on, in order:
+        1. Every app uses this: flag any changed default (color, size,
+           spacing, text style) and say which apps will look different. A
+           breaking API change needs a new major version.
+        2. The shared components set the accessibility floor for every app,
+           and newt-test is what enforces it; flag anything that weakens a
+           check or lets a component go below it. the primary user has low
+           vision. Flag Compose UI missing contentDescription/semantics,
+           buttons under 56dp or rows under 48dp, text under 16sp, text
+           colors under 7:1 contrast, meaning carried by color alone,
+           duplicate screen-reader labels, and animations that ignore the
+           system "remove animations" setting.
+        Do not comment on naming, formatting, or minor style.
+    - path: "**/AndroidManifest.xml"
+      instructions: |
+        Call out manifest changes. Flag new or broadened permissions and
+        components newly exported or exposed without appropriate permission
+        protection.
+    - path: ".github/workflows/**"
+      instructions: |
+        newt-app.yml runs in every app with the release signing key. Flag
+        unpinned actions (must be pinned to a full commit SHA), widened
+        token permissions, pull_request_target, anything that runs PR code
+        with secrets, and a release job not limited to main.
+
+chat:
+  auto_reply: true
