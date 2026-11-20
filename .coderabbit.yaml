@@ -47,6 +47,11 @@ reviews:
            duplicate screen-reader labels, and animations that ignore the
            system "remove animations" setting.
         Do not comment on naming, formatting, or minor style.
+    - path: "**/AndroidManifest.xml"
+      instructions: |
+        Call out manifest changes. Flag new or broadened permissions and
+        components newly exported or exposed without appropriate permission
+        protection.
     - path: ".github/workflows/**"
       instructions: |
         newt-app.yml runs in every app with the release signing key. Flag
